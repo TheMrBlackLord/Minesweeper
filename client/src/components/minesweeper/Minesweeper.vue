@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Board from './Board.vue'
+import Board from './board/Board.vue'
 import Info from './Info.vue'
 import Controls from './Controls.vue'
 export default {
