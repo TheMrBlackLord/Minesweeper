@@ -6,7 +6,7 @@
       </p>
       <p class="text">
          Elapsed time: <span class="value elapsed-time">
-            <Stopwatch :isRunning="false" />
+            <Stopwatch :isRunning="true" />
          </span>
       </p>
       <p class="sub-info">
