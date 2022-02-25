@@ -1,3 +1,4 @@
+// Info.vue
 .info {
    // padding-bottom: 15px;
    border-bottom: 1px solid $light-gray;
@@ -31,6 +32,7 @@
    // }
 }
 
+// Controls.vue
 .controls {
    padding-top: 15px;
    display: flex;
@@ -38,5 +40,60 @@
    align-items: flex-start;
    .restart-game {
       margin-top: 8px;
+   }
+}
+
+// Board.vue
+.minesweeper-grid {
+   background-color: $grid-bg-color;
+   border: 10px solid $grid-border-color;
+
+   .cells {
+      display: flex;
+      flex-wrap: wrap;
+   }
+
+   .cell {
+      border: 5px solid $cell-border-color;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+         background-color: $cell-hover-color;
+      }
+
+      .blue {
+         color: $blue;
+      }
+
+      .green {
+         color: $green;
+      }
+
+      .yellow {
+         color: $yellow;
+      }
+
+      .orange {
+         color: $orange;
+      }
+
+      .red {
+         color: $red;
+      }
+
+      .yellowHighlight {
+         @include cellHighlight($yellowHighlight);
+      }
+
+      .orangeHighlight {
+         @include cellHighlight($orangeHighlight);
+      }
+
+      .redHighlight {
+         @include cellHighlight($redHighlight);
+      }
    }
 }

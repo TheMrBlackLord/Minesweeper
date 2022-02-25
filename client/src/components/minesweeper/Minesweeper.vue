@@ -17,11 +17,7 @@ import Board from './board/Board.vue'
 import Info from './Info.vue'
 import Controls from './Controls.vue'
 export default {
-   name: 'Game Board',
+   name: 'Game',
    components: { Board, Info, Controls }
 }
 </script>
-
-<style>
-
-</style>
