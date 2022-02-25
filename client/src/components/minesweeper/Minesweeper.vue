@@ -1,11 +1,11 @@
 <template>
   <section class="game-section">
      <div class="row">
-        <div class="col-lg-4">
+        <div class="col-md-4">
            <Info />
            <Controls />
         </div>
-        <div class="col-lg-8">
+        <div class="col-md-8">
            <Board />
         </div>
      </div>

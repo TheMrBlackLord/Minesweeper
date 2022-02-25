@@ -27,35 +27,3 @@ export default {
    },
 }
 </script>
-
-<style lang="scss" scoped>
-@import '../../styles/variables';
-   .info {
-      padding-bottom: 15px;
-      border-bottom: 1px solid $light-gray;
-      .title {
-         font-size: 24px;
-         font-weight: 400;
-         text-align: center;
-         display: block;
-      }
-
-      .text {
-         margin-bottom: 5px;
-         color: $text-color;
-         font-size: 18px;
-      }
-      .value {
-         font-family: 'Share Tech Mono', sans-serif;
-      }
-      .sub-info {
-         color: darken($light-gray, 30%);
-      }
-      // .alert-message {
-      //    color: #b51a1a;
-      //    font-weight: bold;
-      //    font-size: 12px;
-      //    padding-left: 10px;
-      // }
-   }
-</style>
