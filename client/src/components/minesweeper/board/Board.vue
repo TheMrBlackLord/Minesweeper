@@ -2,7 +2,7 @@
   <div class="game-board">
     <div class="minesweeper-grid">
       <div class="cells">
-        <Cell />
+        <Cell v-for="i in 100" :key="i"/>
       </div>
     </div>
   </div>
@@ -16,5 +16,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+   .minesweeper-grid {
+      width: 420px;
+      height: 420px;
+   }
 </style>

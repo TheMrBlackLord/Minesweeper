@@ -44,6 +44,11 @@
 }
 
 // Board.vue
+.game-board {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
 .minesweeper-grid {
    background-color: $grid-bg-color;
    border: 10px solid $grid-border-color;
@@ -54,7 +59,8 @@
    }
 
    .cell {
-      border: 5px solid $cell-border-color;
+      border: 5px solid;
+      border-color: $cell-border-color;
       user-select: none;
       display: flex;
       align-items: center;
