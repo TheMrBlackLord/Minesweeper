@@ -1,8 +1,19 @@
 <template>
   <div class="game-board">
-    <div class="minesweeper-grid">
+    <div class="minesweeper-grid"
+      :style="{
+         width: gridStyleSize,
+         height: gridStyleSize,
+         fontSize: difficulty.fontSize
+      }"
+    >
       <div class="cells">
-        <Cell v-for="i in 100" :key="i"/>
+        <Cell v-for="i in gridSize" :key="Math.random() + i"
+            :style="{
+               width: difficulty.cellSize,
+               height: difficulty.cellSize,
+            }"
+        />
       </div>
     </div>
   </div>
@@ -13,12 +24,19 @@ import Cell from './Cell.vue'
 export default {
    name: 'Game Board',
    components: { Cell },
+   props: {
+      difficulty: {type: Object, required: true},
+   },
+   methods: {},
+   computed: {
+      gridSize() {
+         return Math.pow(this.difficulty.size, 2)
+      },
+      gridStyleSize() {
+         const { size, cellSize } = this.difficulty
+         const borderWidth = 20 // 10px left + 10px right / top and bottom
+         return `${size * cellSize + borderWidth}px`
+      }
+   },
 };
 </script>
-
-<style scoped>
-   .minesweeper-grid {
-      width: 420px;
-      height: 420px;
-   }
-</style>
