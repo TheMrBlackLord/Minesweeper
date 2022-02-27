@@ -4,14 +4,14 @@
       :style="{
          width: gridStyleSize,
          height: gridStyleSize,
-         fontSize: difficulty.fontSize
+         fontSize: difficulty.fontSize + 'px'
       }"
     >
       <div class="cells">
         <Cell v-for="i in gridSize" :key="Math.random() + i"
             :style="{
-               width: difficulty.cellSize,
-               height: difficulty.cellSize,
+               width: difficulty.cellSize + 'px',
+               height: difficulty.cellSize + 'px',
             }"
         />
       </div>
