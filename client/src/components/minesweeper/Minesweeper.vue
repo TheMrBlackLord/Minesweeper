@@ -2,7 +2,8 @@
   <section class="game-section">
      <div class="row">
         <div class="col-md-4">
-           <Info :flagsLeft="flagsLeft"/>
+           <Info :flagsLeft="flagsLeft" 
+               :isStopwachRunning="isGameStarted && !isGamePaused"/>
            <Controls 
                :difficulties="difficulties"
                :isGameStarted="isGameStarted"
@@ -32,6 +33,7 @@ export default {
    data() {
       return {
          isGameStarted: false,
+         isGamePaused: false,
          difficulty: 'easy',
          countOfUsedFlags: 0,
       }

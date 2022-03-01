@@ -6,7 +6,7 @@
       </p>
       <p class="text">
          Elapsed time: <span class="value elapsed-time">
-            <Stopwatch :isRunning="true" />
+            <Stopwatch :isRunning="isStopwachRunning" />
          </span>
       </p>
       <p class="sub-info">
@@ -22,7 +22,8 @@ export default {
    name: 'Game info',
    components: { Stopwatch },
    props: {
-      flagsLeft: { type: Number, required: true },
+      flagsLeft: {type: Number, required: true},
+      isStopwachRunning: {type: Boolean, required: true},
       personalBest: { type: String }
    },
 }
