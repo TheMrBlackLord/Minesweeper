@@ -12,6 +12,8 @@
             width: difficulty.cellSize + 'px',
             height: difficulty.cellSize + 'px',
          }"
+         :id="i-1"
+         @cellClicked="cellClicked"
       />
    </div>
    </div>
@@ -19,13 +21,31 @@
 
 <script>
 import Cell from './Cell.vue'
+import { getMatrixPosFromIndex } from '../../../utils'
+
 export default {
    name: 'Game Board',
    components: { Cell },
    props: {
       difficulty: {type: Object, required: true},
+      isGameStarted: {type: Boolean, required: true},
    },
-   methods: {},
+   data() {
+      return {
+         startPos: {row: 0, col: 0}
+      }
+   },
+   methods: {
+      cellClicked(id) {
+         if (!this.isGameStarted) this.startGame(id)
+      },
+      startGame(id) {
+         this.$emit('startGame')
+         const size = this.difficulty.size
+         this.startPos = getMatrixPosFromIndex(id, size)
+         console.log(this.startPos)
+      },
+   },
    computed: {
       gridSize() {
          return Math.pow(this.difficulty.size, 2)

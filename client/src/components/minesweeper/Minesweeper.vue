@@ -10,7 +10,11 @@
             />
         </div>
         <div class="col-md-8">
-           <Board :difficulty="difficulties[difficulty]"/>
+           <Board 
+               :difficulty="difficulties[difficulty]"
+               :isGameStarted="isGameStarted"
+               @startGame="isGameStarted = true"
+            />
         </div>
      </div>
   </section>
