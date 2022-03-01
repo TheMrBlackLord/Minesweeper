@@ -1,22 +1,20 @@
 <template>
-  <div class="game-board">
-    <div class="minesweeper-grid"
-      :style="{
-         width: gridStyleSize,
-         height: gridStyleSize,
-         fontSize: difficulty.fontSize + 'px'
-      }"
-    >
-      <div class="cells">
-        <Cell v-for="i in gridSize" :key="i"
-            :style="{
-               width: difficulty.cellSize + 'px',
-               height: difficulty.cellSize + 'px',
-            }"
-        />
-      </div>
-    </div>
-  </div>
+   <div class="minesweeper-grid"
+   :style="{
+      width: gridStyleSize,
+      height: gridStyleSize,
+      fontSize: difficulty.fontSize + 'px'
+   }"
+   >
+   <div class="cells">
+      <Cell v-for="i in gridSize" :key="i"
+         :style="{
+            width: difficulty.cellSize + 'px',
+            height: difficulty.cellSize + 'px',
+         }"
+      />
+   </div>
+   </div>
 </template>
 
 <script>
