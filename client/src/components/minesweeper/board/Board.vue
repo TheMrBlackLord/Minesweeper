@@ -8,7 +8,7 @@
       }"
     >
       <div class="cells">
-        <Cell v-for="i in gridSize" :key="Math.random() + i"
+        <Cell v-for="i in gridSize" :key="i"
             :style="{
                width: difficulty.cellSize + 'px',
                height: difficulty.cellSize + 'px',
