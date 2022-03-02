@@ -1,5 +1,5 @@
-import { chunk, fill } from 'lodash';
-module.exports = {
+import { chunk, fill } from 'lodash'
+export default {
    getMatrixPosFromIndex(index, size) {
       const row = Math.floor(index / size)
       const col = index % size
@@ -34,5 +34,5 @@ module.exports = {
          }
       }
       return grid
-   },
+   }
 }
