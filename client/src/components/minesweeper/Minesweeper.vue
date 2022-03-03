@@ -41,6 +41,8 @@ export default {
    methods: {
       difficultyChanged(difficulty) {
          this.difficulty = difficulty
+         this.isGameStarted = false
+         this.isGamePaused = false
       }
    },
    computed: {

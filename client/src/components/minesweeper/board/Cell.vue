@@ -1,8 +1,10 @@
 <template>
   <div class="cell"
-  @click.left="cellClicked"
-  @click.right.prevent="flagHandler">
-     <span class="num"></span>
+      @click.left="cellClicked"
+      @click.right.prevent="flagHandler"
+      :class="{revealed: isRevealed}"
+  >
+     <span>{{value}}</span>
   </div>
 </template>
 
@@ -11,20 +13,29 @@ export default {
    name: 'Cell',
    props: {
       id: {type: Number, required: true},
+      cell: {type: [String, Number], required: true},
+      isRevealed: {type: Boolean, required: true},
    },
    data() {
       return {
-         flagPlaced: false
+         isFlagPlaced: false
       }
    },
    methods: {
       cellClicked() {
-         if (!this.flagPlaced) // TODO: check if cell is not open
+         if (!this.isFlagPlaced && !this.isRevealed)
             this.$emit('cellClicked', this.id)
       },
       removeFlag() {},
       placeFlag() {},
       flagHandler() {}
    },
+   computed: {
+      value() {
+         if (this.cell === 'x' && this.isRevealed) return '💣'
+         if (this.isFlagPlaced) return '🚩'
+         return this.isRevealed && this.cell > 0 ? this.cell : ''
+      }
+   }
 }
 </script>

@@ -13,6 +13,8 @@
             height: difficulty.cellSize + 'px',
          }"
          :id="i-1"
+         :cell="getCellFromIndex(i-1)"
+         :isRevealed="getCellStateFromIndex(i-1)"
          @cellClicked="cellClicked"
       />
    </div>
@@ -21,7 +23,13 @@
 
 <script>
 import Cell from './Cell.vue'
-import { getMatrixPosFromIndex } from '../../../utils'
+import { isEqual, inRange } from 'lodash'
+import { 
+      getMatrixPosFromIndex,
+      calculateBombs,
+      randomInteger,
+      getFilledMatrix
+   } from '../../../utils'
 
 export default {
    name: 'Game Board',
@@ -32,19 +40,57 @@ export default {
    },
    data() {
       return {
-         startPos: {row: 0, col: 0}
+         startPos: {row: 0, col: 0},
+         cellsState: this.createCellsState()
       }
    },
    methods: {
       cellClicked(id) {
          if (!this.isGameStarted) this.startGame(id)
+         const { row, col } = getMatrixPosFromIndex(id, this.difficulty.size)
+         // this.revealCell(row, col)
+         this.revealNearbyCells(row, col)
+      },
+      revealCell(row, col) {
+         if (!this.cellsState[row][col]) {
+            this.cellsState[row][col] = true
+         }
+      },
+      revealNearbyCells(row, col) {
+         const size = this.difficulty.size
+         if (inRange(row, 0, size) && inRange(col, 0, size) &&
+            !this.cellsState[row][col]) {
+            this.revealCell(row, col)
+            if (this.board[row][col] === 0) {
+               // check nearby empty cells on the left, right, above, below
+               this.revealNearbyCells(row, col-1)
+               this.revealNearbyCells(row, col+1)
+               this.revealNearbyCells(row+1, col)
+               this.revealNearbyCells(row-1, col)
+               // diagonal
+               this.revealNearbyCells(row+1, col+1)
+               this.revealNearbyCells(row-1, col-1)
+               this.revealNearbyCells(row+1, col-1)
+               this.revealNearbyCells(row-1, col+1)
+            }
+         }
       },
       startGame(id) {
          this.$emit('startGame')
-         const size = this.difficulty.size
-         this.startPos = getMatrixPosFromIndex(id, size)
-         console.log(this.startPos)
+         this.startPos = getMatrixPosFromIndex(id, this.difficulty.size)
       },
+      getCellFromIndex(index) {
+         const { row, col } = getMatrixPosFromIndex(index, this.difficulty.size)
+         return this.board[row][col]
+      },
+      getCellStateFromIndex(index) {
+         const { row, col } = getMatrixPosFromIndex(index, this.difficulty.size)
+         return this.cellsState[row][col]
+      },
+      createCellsState() {
+         // all cells are not revealed by default
+         return getFilledMatrix(this.difficulty.size, false)
+      }
    },
    computed: {
       gridSize() {
@@ -54,6 +100,25 @@ export default {
          const { size, cellSize } = this.difficulty
          const borderWidth = 20 // 10px left + 10px right / top and bottom
          return `${size * cellSize + borderWidth}px`
+      },
+      board() {
+         const size = this.difficulty.size
+         let gameBoard = getFilledMatrix(size, 0)
+         if (!this.isGameStarted) return gameBoard
+         // add bombs
+         let bombsPlaced = 0
+         while (bombsPlaced < this.difficulty.bombs) {
+            let row = randomInteger(size),
+                col = randomInteger(size)
+            if (gameBoard[row][col] != 'x' && !isEqual(this.startPos, {row, col})) {
+               gameBoard[row][col] = 'x'
+               bombsPlaced++
+            }
+         }
+         gameBoard = calculateBombs(gameBoard, size)
+         for (let i = 0; i < size; i++)
+            console.log(...gameBoard[i])
+         return gameBoard
       }
    },
 };
