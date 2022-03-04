@@ -6,7 +6,7 @@
       </p>
       <p class="text">
          Elapsed time: <span class="value elapsed-time">
-            <Stopwatch :isRunning="isStopwachRunning" />
+            <Stopwatch ref="stopwatch" :isRunning="isStopwachRunning" />
          </span>
       </p>
       <p class="sub-info">
@@ -26,5 +26,10 @@ export default {
       isStopwachRunning: {type: Boolean, required: true},
       personalBest: { type: String }
    },
+   methods: {
+      resetStopwatch() {
+         this.$refs.stopwatch.reset()
+      }
+   }
 }
 </script>

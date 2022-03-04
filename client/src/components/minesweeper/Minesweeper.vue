@@ -2,7 +2,8 @@
   <section class="game-section">
      <div class="row">
         <div class="col-md-4">
-           <Info :flagsLeft="flagsLeft" 
+           <Info ref="info"
+               :flagsLeft="flagsLeft" 
                :isStopwachRunning="isGameStarted && !isGamePaused"/>
            <Controls 
                :difficulties="difficulties"
@@ -43,6 +44,7 @@ export default {
          this.difficulty = difficulty
          this.isGameStarted = false
          this.isGamePaused = false
+         this.$refs.info.resetStopwatch()
       }
    },
    computed: {
