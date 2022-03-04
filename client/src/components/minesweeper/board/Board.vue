@@ -45,11 +45,8 @@ export default {
       }
    },
    watch: {
-      difficulty: {
-         handler() {
-            this.cellsState = this.createCellsState()
-         },
-         deep: true
+      difficulty() {
+         this.cellsState = this.createCellsState()
       },
    },
    methods: {
