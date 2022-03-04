@@ -1,7 +1,7 @@
 <template>
   <div class="cell"
       @click.left="cellClicked"
-      @click.right.prevent="flagHandler"
+      @click.right.prevent="toggleFlag"
       :class="{
          revealed: isRevealed,
          [this.colors[cell-1]]: showColor,
@@ -25,14 +25,31 @@ export default {
          colors: ['blue', 'green', 'yellow', 'orange', 'red', 'yellowHighlight', 'orangeHighlight', 'redHighlight']
       }
    },
+   watch: {
+      // remove flag when cell is auto revealed
+      isRevealed(value) {
+         if (this.isFlagPlaced && value) this.removeFlag()
+      }
+   },
    methods: {
       cellClicked() {
          if (!this.isFlagPlaced && !this.isRevealed)
             this.$emit('cellClicked', this.id)
       },
-      removeFlag() {},
-      placeFlag() {},
-      flagHandler() {}
+      removeFlag() {
+         this.isFlagPlaced = false
+         this.$emit('flagRemoved')
+      },
+      placeFlag() {
+         this.isFlagPlaced = true
+         this.$emit('flagPlaced', this.id)
+      },
+      toggleFlag() {
+         if (this.isFlagPlaced)
+            this.removeFlag()
+         else if (!this.isRevealed)
+            this.placeFlag()
+      }
    },
    computed: {
       value() {

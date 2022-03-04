@@ -16,6 +16,8 @@
                :difficulty="difficulties[difficulty]"
                :isGameStarted="isGameStarted"
                @startGame="isGameStarted = true"
+               @removeFlag="usedFlags--"
+               @placeFlag="usedFlags++"
             />
         </div>
      </div>
@@ -36,7 +38,7 @@ export default {
          isGameStarted: false,
          isGamePaused: false,
          difficulty: 'easy',
-         countOfUsedFlags: 0,
+         usedFlags: 0,
       }
    },
    methods: {
@@ -50,8 +52,12 @@ export default {
    computed: {
       ...mapGetters(['difficulties']),
       flagsLeft() {
-         const left = this.difficulties[this.difficulty].bombs - this.countOfUsedFlags
+         const left = this.difficulties[this.difficulty].bombs - this.usedFlags
          return left > 0 ? left : 0
+      },
+      victory() {
+         if (this.usedFlags === this.difficulties[this.difficulty].bombs) console.log('You won!')
+         return this.usedFlags === this.difficulties[this.difficulty].bombs
       }
    },
 }

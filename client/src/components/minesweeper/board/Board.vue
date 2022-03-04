@@ -16,6 +16,8 @@
          :cell="getCellFromIndex(i-1)"
          :isRevealed="getCellStateFromIndex(i-1)"
          @cellClicked="cellClicked"
+         @flagRemoved="flagRemoved"
+         @flagPlaced="flagPlaced"
       />
    </div>
    </div>
@@ -95,6 +97,13 @@ export default {
       startGame(id) {
          this.$emit('startGame')
          this.startPos = getMatrixPosFromIndex(id, this.difficulty.size)
+      },
+      flagRemoved() {
+         this.$emit('removeFlag')
+      },
+      flagPlaced(id) {
+         if (!this.isGameStarted) this.startGame(id)
+         this.$emit('placeFlag')
       },
       getCellFromIndex(index) {
          const { row, col } = getMatrixPosFromIndex(index, this.difficulty.size)
