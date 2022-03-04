@@ -74,35 +74,35 @@
          border: 1px solid $cell-revealed-border-color;
       }
 
-      .blue {
+      &.blue {
          color: $blue;
       }
 
-      .green {
+      &.green {
          color: $green;
       }
 
-      .yellow {
+      &.yellow {
          color: $yellow;
       }
 
-      .orange {
+      &.orange {
          color: $orange;
       }
 
-      .red {
+      &.red {
          color: $red;
       }
 
-      .yellowHighlight {
+      &.yellowHighlight {
          @include cellHighlight($yellowHighlight);
       }
 
-      .orangeHighlight {
+      &.orangeHighlight {
          @include cellHighlight($orangeHighlight);
       }
 
-      .redHighlight {
+      &.redHighlight {
          @include cellHighlight($redHighlight);
       }
    }

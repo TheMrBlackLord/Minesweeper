@@ -2,7 +2,10 @@
   <div class="cell"
       @click.left="cellClicked"
       @click.right.prevent="flagHandler"
-      :class="{revealed: isRevealed}"
+      :class="{
+         revealed: isRevealed,
+         [this.colors[cell-1]]: showColor,
+         }"
   >
      <span>{{value}}</span>
   </div>
@@ -18,7 +21,8 @@ export default {
    },
    data() {
       return {
-         isFlagPlaced: false
+         isFlagPlaced: false,
+         colors: ['blue', 'green', 'yellow', 'orange', 'red', 'yellowHighlight', 'orangeHighlight', 'redHighlight']
       }
    },
    methods: {
@@ -35,6 +39,9 @@ export default {
          if (this.cell === 'x' && this.isRevealed) return '💣'
          if (this.isFlagPlaced) return '🚩'
          return this.isRevealed && this.cell > 0 ? this.cell : ''
+      },
+      showColor() {
+         return this.isRevealed && this.cell > 0
       }
    }
 }
