@@ -44,11 +44,21 @@ export default {
          cellsState: this.createCellsState()
       }
    },
+   watch: {
+      difficulty: {
+         handler() {
+            this.cellsState = this.createCellsState()
+         },
+         deep: true
+      },
+   },
    methods: {
       cellClicked(id) {
          if (!this.isGameStarted) this.startGame(id)
          const { row, col } = getMatrixPosFromIndex(id, this.difficulty.size)
-         this.revealNearbyCells(row, col)
+         setTimeout(() => { // FIXME: remove timeout and fix bug with computed
+            this.revealNearbyCells(row, col)
+         }, 0)
          if (this.board[row][col] === 'x') {
             this.revealAllCells()
             console.log('You lost!')
