@@ -48,19 +48,29 @@ export default {
       cellClicked(id) {
          if (!this.isGameStarted) this.startGame(id)
          const { row, col } = getMatrixPosFromIndex(id, this.difficulty.size)
-         // this.revealCell(row, col)
          this.revealNearbyCells(row, col)
+         if (this.board[row][col] === 'x') {
+            this.revealAllCells()
+            console.log('You lost!')
+         }
       },
-      revealCell(row, col) {
-         if (!this.cellsState[row][col]) {
-            this.cellsState[row][col] = true
+      revealAllCells() {
+         const size = this.difficulty.size
+         for (let row = 0; row < size; row++) {
+            for (let col = 0; col < size; col++) {
+               if (this.cellsState[row][col] === false) {
+                  this.cellsState[row][col] = true
+               }
+            }
          }
       },
       revealNearbyCells(row, col) {
          const size = this.difficulty.size
          if (inRange(row, 0, size) && inRange(col, 0, size) &&
             !this.cellsState[row][col]) {
-            this.revealCell(row, col)
+            if (this.board[row][col] !== 'x') {
+               this.cellsState[row][col] = true
+            }
             if (this.board[row][col] === 0) {
                // check nearby empty cells on the left, right, above, below
                this.revealNearbyCells(row, col-1)
