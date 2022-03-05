@@ -43,13 +43,21 @@ export default {
    data() {
       return {
          startPos: {row: 0, col: 0},
-         cellsState: this.createCellsState()
+         cellsState: this.createCellsState(),
+         openedCells: 0,
       }
    },
    watch: {
       difficulty() {
          this.cellsState = this.createCellsState()
+         this.openedCells = 0
       },
+      cellsState: {
+         handler() {
+            this.$emit('cellsLeft', this.gridSize - this.openedCells)
+         },
+         deep: true
+      }
    },
    methods: {
       cellClicked(id) {
@@ -79,6 +87,7 @@ export default {
             !this.cellsState[row][col]) {
             if (this.board[row][col] !== 'x') {
                this.cellsState[row][col] = true
+               this.openedCells++
             }
             if (this.board[row][col] === 0) {
                // check nearby empty cells on the left, right, above, below
@@ -143,7 +152,7 @@ export default {
          }
          gameBoard = calculateBombs(gameBoard, size)
          for (let i = 0; i < size; i++)
-            console.log(...gameBoard[i])
+            console.log(...gameBoard[i].map(v => v.toString()))
          return gameBoard
       }
    },

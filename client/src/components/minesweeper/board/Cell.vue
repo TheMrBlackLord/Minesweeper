@@ -3,6 +3,7 @@
       @click.left="cellClicked"
       @click.right.prevent="toggleFlag"
       :class="{
+         x: cell === 'x',
          revealed: isRevealed,
          [this.colors[cell-1]]: showColor,
          }"
@@ -63,3 +64,9 @@ export default {
    }
 }
 </script>
+
+<style>
+   .x {
+      background: rgba(255, 0, 0, 0.473) !important;
+   }
+</style>

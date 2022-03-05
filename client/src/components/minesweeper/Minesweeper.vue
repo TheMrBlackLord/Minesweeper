@@ -18,6 +18,7 @@
                @startGame="isGameStarted = true"
                @removeFlag="usedFlags--"
                @placeFlag="usedFlags++"
+               @cellsLeft="count => cellsLeft = count"
             />
         </div>
      </div>
@@ -39,6 +40,7 @@ export default {
          isGamePaused: false,
          difficulty: 'easy',
          usedFlags: 0,
+         cellsLeft: 0
       }
    },
    methods: {
@@ -56,8 +58,8 @@ export default {
          return left > 0 ? left : 0
       },
       victory() {
-         if (this.usedFlags === this.difficulties[this.difficulty].bombs) console.log('You won!')
-         return this.usedFlags === this.difficulties[this.difficulty].bombs
+         const bombs = this.difficulties[this.difficulty].bombs
+         return this.cellsLeft === bombs && this.usedFlags === bombs
       }
    },
 }
