@@ -8,6 +8,7 @@
            <Controls 
                :difficulties="difficulties"
                :isGameStarted="isGameStarted"
+               :isGamePaused="isGamePaused"
                @difficultyChanged="difficultyChanged"
             />
         </div>

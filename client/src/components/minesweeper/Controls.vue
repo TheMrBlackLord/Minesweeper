@@ -9,16 +9,28 @@
             </option>
          </select>
       </div>
-      <button class="btn btn-primary restart-game" :disabled="!isGameStarted">Restart Game</button>
+      <div class="control-btns">
+         <button class="btn btn-primary" :disabled="!isGameStarted">
+            <img src="../../assets/svg/replay.svg" alt="replay">
+         </button>
+         <button class="btn btn-primary" :disabled="!isGamePaused">
+            <img v-if="!isGamePaused" src="../../assets/svg/pause.svg" alt="pause">
+            <img v-else src="../../assets/svg/play.svg" alt="play">
+         </button>
+      </div>
   </div>
 </template>
 
 <script>
+
 export default {
    name: 'Controls',
+   components: {
+   },
    props: {
       difficulties: {type: Object, required: true},
       isGameStarted: {type: Boolean, required: true},
+      isGamePaused: {type: Boolean, required: true},
    },
    methods: {
       diffucultyChange(e) {

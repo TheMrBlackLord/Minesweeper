@@ -38,8 +38,17 @@
    display: flex;
    flex-direction: column;
    align-items: flex-start;
-   .restart-game {
+   .control-btns {
       margin-top: 8px;
+      display: flex;
+      gap: 20px;
+      button {
+         display: flex;
+         height: 40px;
+         width: 40px;
+         align-items: center;
+         justify-content: center;
+      }
    }
 }
 
