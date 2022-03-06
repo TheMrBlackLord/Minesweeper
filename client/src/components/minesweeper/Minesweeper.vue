@@ -10,6 +10,8 @@
                :isGameStarted="isGameStarted"
                :isGamePaused="isGamePaused"
                @difficultyChanged="difficultyChanged"
+               @restartGame="restartGame"
+               @pauseGame="pauseGame"
             />
         </div>
         <div class="col-md-8">
@@ -47,9 +49,17 @@ export default {
    methods: {
       difficultyChanged(difficulty) {
          this.difficulty = difficulty
+         this.restartGame()
+      },
+      restartGame() {
          this.isGameStarted = false
          this.isGamePaused = false
          this.$refs.info.resetStopwatch()
+         this.usedFlags = 0
+         this.cellsLeft = 0
+      },
+      pauseGame() {
+         this.isGamePaused = !this.isGamePaused
       }
    },
    computed: {

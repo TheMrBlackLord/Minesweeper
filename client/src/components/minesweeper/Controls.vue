@@ -10,10 +10,14 @@
          </select>
       </div>
       <div class="control-btns">
-         <button class="btn btn-primary" :disabled="!isGameStarted">
+         <button class="btn btn-primary" :disabled="!isGameStarted"
+            @click="restartGame"
+         >
             <img src="../../assets/svg/replay.svg" alt="replay">
          </button>
-         <button class="btn btn-primary" :disabled="!isGamePaused">
+         <button class="btn btn-primary" :disabled="!isGameStarted"
+            @click="pauseGame"
+         >
             <img v-if="!isGamePaused" src="../../assets/svg/pause.svg" alt="pause">
             <img v-else src="../../assets/svg/play.svg" alt="play">
          </button>
@@ -35,7 +39,13 @@ export default {
    methods: {
       diffucultyChange(e) {
          this.$emit('difficultyChanged', e.target.value)
-      }
+      },
+      pauseGame() {
+         this.$emit('pauseGame')
+      },
+      restartGame() {
+         this.$emit('restartGame')
+      },
    },
 }
 </script>

@@ -49,8 +49,10 @@ export default {
    },
    watch: {
       difficulty() {
-         this.cellsState = this.createCellsState()
-         this.openedCells = 0
+         this.restart()
+      },
+      isGameStarted() {
+         this.restart()
       },
       cellsState: {
          handler() {
@@ -106,6 +108,10 @@ export default {
       startGame(id) {
          this.$emit('startGame')
          this.startPos = getMatrixPosFromIndex(id, this.difficulty.size)
+      },
+      restart() {
+         this.cellsState = this.createCellsState()
+         this.openedCells = 0
       },
       flagRemoved() {
          this.$emit('removeFlag')
