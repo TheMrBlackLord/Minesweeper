@@ -4,8 +4,10 @@
 
 <script>
 export default {
-   props: {
-      isRunning: {type: Boolean, required: true}
+   inject: {
+      isRunning: {
+         from: 'isStopwachRunning'
+      }
    },
    data() {
       return {

@@ -4,7 +4,7 @@
         <div class="col-md-4">
            <Info ref="info"
                :flagsLeft="flagsLeft" 
-               :isStopwachRunning="isGameStarted && !isGamePaused"/>
+               />
            <Controls 
                :difficulties="difficulties"
                :isGameStarted="isGameStarted"
@@ -33,6 +33,7 @@ import Board from './board/Board.vue'
 import Info from './Info.vue'
 import Controls from './Controls.vue'
 import { mapGetters } from 'vuex'
+import { computed } from 'vue'
 
 export default {
    name: 'Game',
@@ -44,6 +45,12 @@ export default {
          difficulty: 'easy',
          usedFlags: 0,
          cellsLeft: 0
+      }
+   },
+   provide() {
+      return {
+         isStopwachRunning: computed(() => this.isGameStarted && !this.isGamePaused),
+         isPause: computed(() => this.isGamePaused),
       }
    },
    methods: {

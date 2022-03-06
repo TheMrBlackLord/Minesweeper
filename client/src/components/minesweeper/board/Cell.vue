@@ -20,6 +20,7 @@ export default {
       cell: {type: [String, Number], required: true},
       isRevealed: {type: Boolean, required: true},
    },
+   inject: ['isPause'],
    data() {
       return {
          isFlagPlaced: false,
@@ -34,7 +35,7 @@ export default {
    },
    methods: {
       cellClicked() {
-         if (!this.isFlagPlaced && !this.isRevealed)
+         if (!this.isFlagPlaced && !this.isRevealed && !this.isPause)
             this.$emit('cellClicked', this.id)
       },
       removeFlag() {
@@ -46,9 +47,9 @@ export default {
          this.$emit('flagPlaced', this.id)
       },
       toggleFlag() {
-         if (this.isFlagPlaced)
+         if (this.isFlagPlaced && !this.isPause)
             this.removeFlag()
-         else if (!this.isRevealed)
+         else if (!this.isRevealed && !this.isPause)
             this.placeFlag()
       }
    },
