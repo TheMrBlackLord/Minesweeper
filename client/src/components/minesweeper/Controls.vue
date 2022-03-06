@@ -18,8 +18,8 @@
          <button class="btn btn-primary" :disabled="!isGameStarted"
             @click="pauseGame"
          >
-            <img v-if="!isGamePaused" src="../../assets/svg/pause.svg" alt="pause">
-            <img v-else src="../../assets/svg/play.svg" alt="play">
+            <img v-show="!isGamePaused" src="../../assets/svg/pause.svg" alt="pause">
+            <img v-show="isGameStarted" src="../../assets/svg/play.svg" alt="play">
          </button>
       </div>
   </div>
