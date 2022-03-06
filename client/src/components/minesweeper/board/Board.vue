@@ -38,6 +38,7 @@ export default {
    components: { Cell },
    props: {
       difficulty: {type: Object, required: true},
+      usedFlags: {type: Number, required: true},
       isGameStarted: {type: Boolean, required: true},
    },
    data() {
@@ -54,11 +55,8 @@ export default {
       isGameStarted() {
          this.restart()
       },
-      cellsState: {
-         handler() {
-            this.$emit('cellsLeft', this.gridSize - this.openedCells)
-         },
-         deep: true
+      isVictory() {
+         this.$emit('victory')
       }
    },
    methods: {
@@ -70,7 +68,7 @@ export default {
          }, 0)
          if (this.board[row][col] === 'x') {
             this.revealAllCells()
-            console.log('You lost!')
+            this.$emit('gameOver')
          }
       },
       revealAllCells() {
@@ -141,6 +139,10 @@ export default {
          const { size, cellSize } = this.difficulty
          const borderWidth = 20 // 10px left + 10px right / top and bottom
          return `${size * cellSize + borderWidth}px`
+      },
+      isVictory() {
+         const bombs = this.difficulty.bombs
+         return this.gridSize - this.openedCells === bombs && this.usedFlags === bombs
       },
       board() {
          const size = this.difficulty.size

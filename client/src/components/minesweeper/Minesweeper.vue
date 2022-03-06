@@ -18,10 +18,10 @@
            <Board 
                :difficulty="difficulties[difficulty]"
                :isGameStarted="isGameStarted"
+               :usedFlags="usedFlags"
                @startGame="isGameStarted = true"
                @removeFlag="usedFlags--"
                @placeFlag="usedFlags++"
-               @cellsLeft="count => cellsLeft = count"
             />
         </div>
      </div>
@@ -43,8 +43,7 @@ export default {
          isGameStarted: false,
          isGamePaused: false,
          difficulty: 'easy',
-         usedFlags: 0,
-         cellsLeft: 0
+         usedFlags: 0
       }
    },
    provide() {
@@ -63,7 +62,6 @@ export default {
          this.isGamePaused = false
          this.$refs.info.resetStopwatch()
          this.usedFlags = 0
-         this.cellsLeft = 0
       },
       pauseGame() {
          this.isGamePaused = !this.isGamePaused
@@ -74,10 +72,6 @@ export default {
       flagsLeft() {
          const left = this.difficulties[this.difficulty].bombs - this.usedFlags
          return left > 0 ? left : 0
-      },
-      victory() {
-         const bombs = this.difficulties[this.difficulty].bombs
-         return this.cellsLeft === bombs && this.usedFlags === bombs
       }
    },
 }
