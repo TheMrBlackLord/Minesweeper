@@ -61,6 +61,7 @@
 .minesweeper-grid {
    background-color: $grid-bg-color;
    border: 10px solid $grid-border-color;
+   position: relative;
 
    .cells {
       display: flex;
@@ -114,5 +115,24 @@
       &.redHighlight {
          @include cellHighlight($redHighlight);
       }
+   }
+}
+
+// ResultPanel.vue
+.result-background {
+   position: absolute;
+   top: 0;
+   right: 0;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: space-evenly;
+   flex-direction: column;
+   align-items: center;
+   background: $result-bg-color;
+   .title {
+      color: $white;
+      font-size: 32px;
+      font-weight: bold;
    }
 }

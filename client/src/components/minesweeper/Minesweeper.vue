@@ -22,7 +22,11 @@
                @startGame="isGameStarted = true"
                @removeFlag="usedFlags--"
                @placeFlag="usedFlags++"
-            />
+            >
+               <template #result>
+                  <ResultPanel :isVictory="true"/>
+               </template>
+            </Board>
         </div>
      </div>
   </section>
@@ -30,6 +34,7 @@
 
 <script>
 import Board from './board/Board.vue'
+import ResultPanel from './board/ResultPanel.vue'
 import Info from './Info.vue'
 import Controls from './Controls.vue'
 import { mapGetters } from 'vuex'
@@ -37,7 +42,7 @@ import { computed } from 'vue'
 
 export default {
    name: 'Game',
-   components: { Board, Info, Controls },
+   components: { Board, Info, Controls, ResultPanel },
    data() {
       return {
          isGameStarted: false,

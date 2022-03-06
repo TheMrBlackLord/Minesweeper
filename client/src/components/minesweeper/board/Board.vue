@@ -6,20 +6,21 @@
       fontSize: difficulty.fontSize + 'px'
    }"
    >
-   <div class="cells">
-      <Cell v-for="i in gridSize" :key="i"
-         :style="{
-            width: difficulty.cellSize + 'px',
-            height: difficulty.cellSize + 'px',
-         }"
-         :id="i-1"
-         :cell="getCellFromIndex(i-1)"
-         :isRevealed="getCellStateFromIndex(i-1)"
-         @cellClicked="cellClicked"
-         @flagRemoved="flagRemoved"
-         @flagPlaced="flagPlaced"
-      />
-   </div>
+      <div class="cells">
+         <Cell v-for="i in gridSize" :key="i"
+            :style="{
+               width: difficulty.cellSize + 'px',
+               height: difficulty.cellSize + 'px',
+            }"
+            :id="i-1"
+            :cell="getCellFromIndex(i-1)"
+            :isRevealed="getCellStateFromIndex(i-1)"
+            @cellClicked="cellClicked"
+            @flagRemoved="flagRemoved"
+            @flagPlaced="flagPlaced"
+         />
+      </div>
+      <slot name="result"></slot>
    </div>
 </template>
 
