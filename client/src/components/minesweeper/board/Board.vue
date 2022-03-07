@@ -162,8 +162,6 @@ export default {
             }
          }
          gameBoard = calculateBombs(gameBoard, size)
-         for (let i = 0; i < size; i++)
-            console.log(...gameBoard[i].map(v => v.toString()))
          return gameBoard
       },
       cellIds() {
