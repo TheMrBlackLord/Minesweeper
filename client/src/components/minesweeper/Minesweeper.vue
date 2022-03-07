@@ -22,9 +22,15 @@
                @startGame="isGameStarted = true"
                @removeFlag="usedFlags--"
                @placeFlag="usedFlags++"
+               @victory="victory"
+               @defeat="defeat"
             >
                <template #result>
-                  <ResultPanel :isVictory="true"/>
+                  <ResultPanel
+                     v-if="isGameFinished"
+                     @playAgain="restartGame"
+                     :isVictory="isVictory"
+                  />
                </template>
             </Board>
         </div>
@@ -47,13 +53,17 @@ export default {
       return {
          isGameStarted: false,
          isGamePaused: false,
+         isGameFinished: false,
          difficulty: 'easy',
-         usedFlags: 0
+         usedFlags: 0,
+         isVictory: false
       }
    },
    provide() {
       return {
-         isStopwachRunning: computed(() => this.isGameStarted && !this.isGamePaused),
+         isStopwachRunning: computed(() => {
+            return this.isGameStarted && !this.isGamePaused && !this.isGameFinished
+         }),
          isPause: computed(() => this.isGamePaused),
       }
    },
@@ -63,10 +73,19 @@ export default {
          this.restartGame()
       },
       restartGame() {
+         this.isGameFinished = false
          this.isGameStarted = false
          this.isGamePaused = false
          this.$refs.info.resetStopwatch()
          this.usedFlags = 0
+         this.isVictory = false
+      },
+      victory() {
+         this.isGameFinished = true
+         this.isVictory = true
+      },
+      defeat() {
+         this.isGameFinished = true
       },
       pauseGame() {
          this.isGamePaused = !this.isGamePaused

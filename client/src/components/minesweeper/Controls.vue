@@ -19,7 +19,7 @@
             @click="pauseGame"
          >
             <img v-show="!isGamePaused" src="../../assets/svg/pause.svg" alt="pause">
-            <img v-show="isGameStarted" src="../../assets/svg/play.svg" alt="play">
+            <img v-show="isGamePaused" src="../../assets/svg/play.svg" alt="play">
          </button>
       </div>
   </div>

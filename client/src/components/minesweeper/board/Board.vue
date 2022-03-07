@@ -57,7 +57,8 @@ export default {
          this.restart()
       },
       isVictory() {
-         this.$emit('victory')
+         if (this.isGameStarted)
+            this.$emit('victory')
       }
    },
    methods: {
@@ -69,7 +70,7 @@ export default {
          }, 0)
          if (this.board[row][col] === 'x') {
             this.revealAllCells()
-            this.$emit('gameOver')
+            this.$emit('defeat')
          }
       },
       revealAllCells() {
@@ -111,6 +112,7 @@ export default {
       restart() {
          this.cellsState = this.createCellsState()
          this.openedCells = 0
+         this.$forceUpdate()
       },
       flagRemoved() {
          this.$emit('removeFlag')
