@@ -3,7 +3,6 @@
       @click.left="cellClicked"
       @click.right.prevent="toggleFlag"
       :class="{
-         x: cell === 'x',
          revealed: isRevealed,
          [this.colors[cell-1]]: showColor,
          }"
@@ -19,11 +18,11 @@ export default {
       id: {type: Number, required: true},
       cell: {type: [String, Number], required: true},
       isRevealed: {type: Boolean, required: true},
+      isFlagPlaced: {type: Boolean, required: true},
    },
    inject: ['isPause'],
    data() {
       return {
-         isFlagPlaced: false,
          colors: ['blue', 'green', 'yellow', 'orange', 'red', 'yellowHighlight', 'orangeHighlight', 'redHighlight']
       }
    },
@@ -39,12 +38,10 @@ export default {
             this.$emit('cellClicked', this.id)
       },
       removeFlag() {
-         this.isFlagPlaced = false
-         this.$emit('flagRemoved')
+         this.$emit('removeFlag', this.id)
       },
       placeFlag() {
-         this.isFlagPlaced = true
-         this.$emit('flagPlaced', this.id)
+         this.$emit('placeFlag', this.id)
       },
       toggleFlag() {
          if (this.isFlagPlaced && !this.isPause)
@@ -65,9 +62,3 @@ export default {
    }
 }
 </script>
-
-<style>
-   .x {
-      background: rgba(255, 0, 0, 0.473) !important;
-   }
-</style>

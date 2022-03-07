@@ -20,8 +20,8 @@
                :isGameStarted="isGameStarted"
                :usedFlags="usedFlags"
                @startGame="isGameStarted = true"
-               @removeFlag="usedFlags--"
-               @placeFlag="usedFlags++"
+               @flagRemoved="usedFlags--"
+               @flagPlaced="usedFlags++"
                @victory="victory"
                @defeat="defeat"
             >

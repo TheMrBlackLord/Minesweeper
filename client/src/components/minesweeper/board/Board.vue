@@ -7,17 +7,18 @@
    }"
    >
       <div class="cells">
-         <Cell v-for="i in gridSize" :key="cellIds[i-1]"
+         <Cell v-for="i in gridSize" :key="i"
             :style="{
                width: difficulty.cellSize + 'px',
                height: difficulty.cellSize + 'px',
             }"
             :id="i-1"
             :cell="getCellFromIndex(i-1)"
-            :isRevealed="getCellStateFromIndex(i-1)"
+            :isRevealed="getCellStateFromIndex(i-1, cellsState)"
+            :isFlagPlaced="getCellStateFromIndex(i-1, cellsFlagged)"
             @cellClicked="cellClicked"
-            @flagRemoved="flagRemoved"
-            @flagPlaced="flagPlaced"
+            @removeFlag="removeFlag"
+            @placeFlag="placeFlag"
          />
       </div>
       <slot name="result"></slot>
@@ -31,8 +32,7 @@ import {
       getMatrixPosFromIndex,
       calculateBombs,
       randomInteger,
-      getFilledMatrix,
-      randomString
+      getFilledMatrix
    } from '../../../utils'
 export default {
    name: 'Game Board',
@@ -46,6 +46,7 @@ export default {
       return {
          startPos: {row: 0, col: 0},
          cellsState: this.createCellsState(),
+         cellsFlagged: this.createCellsState(),
          openedCells: 0,
       }
    },
@@ -111,23 +112,29 @@ export default {
       },
       restart() {
          this.cellsState = this.createCellsState()
+         this.cellsFlagged = this.createCellsState()
          this.openedCells = 0
          this.$forceUpdate()
       },
-      flagRemoved() {
-         this.$emit('removeFlag')
+      removeFlag(id) {
+         const { row, col } = getMatrixPosFromIndex(id, this.difficulty.size)
+         this.cellsFlagged[row][col] = false
+         this.$emit('flagRemoved')
       },
-      flagPlaced(id) {
-         if (!this.isGameStarted) this.startGame(id)
-         this.$emit('placeFlag')
+      placeFlag(id) {
+         if (this.isGameStarted) {
+            const { row, col } = getMatrixPosFromIndex(id, this.difficulty.size)
+            this.cellsFlagged[row][col] = true
+            this.$emit('flagPlaced')
+         }
       },
       getCellFromIndex(index) {
          const { row, col } = getMatrixPosFromIndex(index, this.difficulty.size)
          return this.board[row][col]
       },
-      getCellStateFromIndex(index) {
+      getCellStateFromIndex(index, state) {
          const { row, col } = getMatrixPosFromIndex(index, this.difficulty.size)
-         return this.cellsState[row][col]
+         return state[row][col]
       },
       createCellsState() {
          // all cells are not revealed by default
@@ -163,10 +170,6 @@ export default {
          }
          gameBoard = calculateBombs(gameBoard, size)
          return gameBoard
-      },
-      cellIds() {
-         if (!this.isGameStarted) return []
-         return Array(this.gridSize).fill().map(() => randomString())
       }
    },
 };
