@@ -7,7 +7,7 @@
    }"
    >
       <div class="cells">
-         <Cell v-for="i in gridSize" :key="i"
+         <Cell v-for="i in gridSize" :key="cellIds[i-1]"
             :style="{
                width: difficulty.cellSize + 'px',
                height: difficulty.cellSize + 'px',
@@ -31,9 +31,9 @@ import {
       getMatrixPosFromIndex,
       calculateBombs,
       randomInteger,
-      getFilledMatrix
+      getFilledMatrix,
+      randomString
    } from '../../../utils'
-
 export default {
    name: 'Game Board',
    components: { Cell },
@@ -165,6 +165,10 @@ export default {
          for (let i = 0; i < size; i++)
             console.log(...gameBoard[i].map(v => v.toString()))
          return gameBoard
+      },
+      cellIds() {
+         if (!this.isGameStarted) return []
+         return Array(this.gridSize).fill().map(() => randomString())
       }
    },
 };
