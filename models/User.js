@@ -12,15 +12,15 @@ const User = new Schema({
       required: true
    },
    role: {
-      type: Types.ObjectId,
-      ref: 'Role',
-      required: true
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user'
    },
    gameData: {
       type: Types.ObjectId,
       ref: 'GameData',
       required: true
    }
-})
+}, {timestamps: { createdAt: true, updatedAt: false }})
 
 module.exports = model('User', User)

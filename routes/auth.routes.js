@@ -1,21 +1,27 @@
 const { Router } = require('express')
-const User = require('../models/User')
-const Role = require('../models/Role')
-const GameData = require('../models/GameData')
+const authService = require('../services/auth.services')
+const { body, validationResult } = require('express-validator')
 
 const router = Router()
 
-router.post('/register', async (req, res) => {
-   const role = new Role({ name: 'user' })
-   const gameData = new GameData()
-   const user = new User({
-      username: 'test',
-      password: 'test',
-      role,
-      gameData
-   })
-   const savedUser = await user.save()
-   res.json({savedUser})
-})
+router.post('/register', 
+   body('username').trim().isLength({ min: 3, max: 15})
+      .withMessage('Username must be between 3 and 15 characters long'),
+   body('password').isLength({ min: 6})
+      .withMessage('Password must be at least 6 characters long'),
+   async (req, res) => {
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+         return res.status(400).json({errors: errors.array()})
+      }
+      try {
+         const {username, password} = req.body
+         const user = await authService.register(username, password)
+         res.status(201).json(user)
+      } catch (e) {
+         res.status(500).json({ message: e.message })
+      }
+   }
+)
 
 module.exports = router
