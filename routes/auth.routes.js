@@ -24,5 +24,17 @@ router.post('/register',
       }
    }
 )
-
+router.post('/login', async (req, res, next) => {
+   try {
+      const {username, password} = req.body
+      const user = await authService.login(username, password)
+      res.cookie('refreshToken', user.tokens.refreshToken, {
+         maxAge: 1000 * 60 * 60 * 24 * 15,
+         httpOnly: true
+      })
+      res.json(user)
+   } catch (e) {
+      next(e)
+   }
+})
 module.exports = router
