@@ -14,7 +14,7 @@ router.post('/register',
       const errors = validationResult(req)
       try {
          if (!errors.isEmpty()) {
-            return next(new BadRequestError('Validation error2323', errors.array()))
+            return next(new BadRequestError('Validation error', errors.array()))
          }
          const {username, password} = req.body
          const user = await authService.register(username, password)
