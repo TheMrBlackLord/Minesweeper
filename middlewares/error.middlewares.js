@@ -7,8 +7,9 @@ module.exports = function (error, _, res, _) {
          errors: error.errors
       })
    }
+   console.error(error)
    return res.status(500).json({
-      message: 'Unexpected error'
+      message: 'Unexpected error',
    })
 
 }

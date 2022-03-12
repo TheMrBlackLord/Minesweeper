@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const GameData = require('../models/GameData')
+const tokenService = require('./token.services') 
 const UserDTO = require('../dto/user.dto')
 const { BadRequestError } = require('../errors/api.errors')
 
@@ -13,13 +14,19 @@ class AuthService {
       }
       const hashedPassword = await bcrypt.hash(password, 3)
       const gameData = new GameData()
-      const user = await User.create({
+      await gameData.save()
+      const userRaw = await User.create({
          username,
          password: hashedPassword,
          gameData: gameData._id
       })
-      await gameData.save()
-      return new UserDTO(user)
+      const user = new UserDTO(userRaw)
+      const tokens = await tokenService.generateTokens({...user})
+      await tokenService.saveToken(user.id, tokens.refreshToken)
+      return {
+         tokens,
+         user
+      }
    }
 }
 
