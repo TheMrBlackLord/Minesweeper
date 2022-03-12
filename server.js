@@ -4,12 +4,15 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 const authRouter = require('./routes/auth.routes')
-
+const errorMiddleware = require('./middlewares/error.middlewares')
 const app = express()
-app.use(cors())
-app.use(cookieParser())
+
 app.use(express.json())
+app.use(cookieParser())
+app.use(cors())
 app.use('/api/auth', authRouter)
+app.use(errorMiddleware)
+
 const PORT = process.env.PORT || 5000
 
 mongoose.connect(process.env.MONGODB_URI)
