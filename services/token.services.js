@@ -13,6 +13,20 @@ class TokenService{
    async saveToken(owner, refreshToken) {
       await Token.findOneAndUpdate({owner}, {refreshToken}, {upsert: true})
    }
+   validateAccessToken(token) {
+      try {
+         return jwt.verify(token, process.env.JWT_ACCESS_SECRET)
+      } catch (e) {
+         return null
+      }
+   }
+   validateRefreshToken(token) {
+      try {
+         return jwt.verify(token, process.env.JWT_REFRESH_SECRET)
+      } catch (e) {
+         return null
+      }
+   }
 }
 
 module.exports = new TokenService()
