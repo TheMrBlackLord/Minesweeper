@@ -13,6 +13,15 @@ router.get('/all', async (req, res, next) => {
    }
 })
 
+router.get('/:id', async (req, res, next) => {
+   try {
+      const user = await userService.getOne(req.params.id)
+      res.json(user)
+   } catch (e) {
+      next(e)
+   }
+})
+
 router.post('/game/win', authMiddleware, async (req, res, next) => {
    try {
       const id = req.user.id
