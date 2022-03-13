@@ -6,7 +6,6 @@ const { BadRequestError } = require('../errors/api.errors')
 class UserService {
    async getAll() {
       const users = await User.find().populate({
-         populate: 'gameData',
          path: 'gameData',
          populate: {
             path: 'games',
@@ -15,7 +14,12 @@ class UserService {
       return users.map(user => new UserDTO(user))
    }
    async getOne(id) {
-      const user = await User.findById(id)
+      const user = await User.findById(id).populate({
+         path: 'gameData',
+         populate: {
+            path: 'games',
+         }
+      })
       return new UserDTO(user)
    }
    async _addNewGame(id, difficulty, time, isWin) {
