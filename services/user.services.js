@@ -1,16 +1,22 @@
 const User = require('../models/User')
 const Game = require('../models/Game')
-const userDTO = require('../dto/user.dto')
+const UserDTO = require('../dto/user.dto')
 const { BadRequestError } = require('../errors/api.errors')
 
 class UserService {
    async getAll() {
-      const users = await User.find()
-      return users.map(user => new userDTO(user))
+      const users = await User.find().populate({
+         populate: 'gameData',
+         path: 'gameData',
+         populate: {
+            path: 'games',
+         }
+      })
+      return users.map(user => new UserDTO(user))
    }
    async getOne(id) {
       const user = await User.findById(id)
-      return new userDTO(user)
+      return new UserDTO(user)
    }
    async _addNewGame(id, difficulty, time, isWin) {
       const user = await User.findById(id)
