@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const authService = require('../services/auth.services')
 const { body, validationResult } = require('express-validator')
-const { BadRequestError } = require('../errors/api.errors')
+const { BadRequestError, UnauthorizedError } = require('../errors/api.errors')
 
 const router = Router()
 
@@ -33,6 +33,19 @@ router.post('/login', async (req, res, next) => {
          httpOnly: true
       })
       res.json(user)
+   } catch (e) {
+      next(e)
+   }
+})
+router.post('/logout', async (req, res, next) => {
+   try {
+      const {refreshToken} = req.cookies
+      if (!refreshToken) {
+         return next(new UnauthorizedError())
+      }
+      const token = await authService.logout(refreshToken)
+      res.clearCookie('refreshToken')
+      return res.json(token)
    } catch (e) {
       next(e)
    }

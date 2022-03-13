@@ -44,6 +44,9 @@ class AuthService {
          user
       }
    }
+   async logout(refreshToken) {
+      await tokenService.removeToken(refreshToken)
+   }
 }
 
 module.exports = new AuthService()

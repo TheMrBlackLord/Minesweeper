@@ -1,42 +1,19 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, Types } = require('mongoose')
 
 const gameData = new Schema({
    personalBest: {
       type: Number,
-      default: 0
+      default: Infinity
    },
    games: [{
-      type: Date,
+      type: Types.ObjectId,
+      ref: 'Game',
       default: []
    }],
-   gamesPlayed: {
-      easy: {
-         type: Number,
-         default: 0
-      },
-      medium: {
-         type: Number,
-         default: 0
-      },
-      hard: {
-         type: Number,
-         default: 0
-      }
-   },
-   gamesWon: {
-      easy: {
-         type: Number,
-         default: 0
-      },
-      medium: {
-         type: Number,
-         default: 0
-      },
-      hard: {
-         type: Number,
-         default: 0
-      }
-   },
+   totalWins: {
+      type: Number,
+      default: 0
+   }
 })
 
 module.exports = model('GameData', gameData)

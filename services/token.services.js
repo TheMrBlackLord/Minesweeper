@@ -27,6 +27,9 @@ class TokenService{
          return null
       }
    }
+   async removeToken(refreshToken) {
+      await Token.deleteOne({refreshToken})
+   }
 }
 
 module.exports = new TokenService()
