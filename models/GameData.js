@@ -13,6 +13,10 @@ const gameData = new Schema({
    totalWins: {
       type: Number,
       default: 0
+   },
+   totalDefeats: {
+      type: Number,
+      default: 0
    }
 })
 
