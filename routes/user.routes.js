@@ -1,6 +1,8 @@
 const { Router } = require('express')
 const userService = require('../services/user.services')
 const authMiddleware = require('../middlewares/auth.middlewares')
+const { body, validationResult } = require('express-validator')
+const { BadRequestError } = require('../errors/api.errors')
 
 const router = Router()
 
@@ -13,14 +15,41 @@ router.get('/all', async (req, res, next) => {
    }
 })
 
-router.get('/:id', async (req, res, next) => {
-   try {
-      const user = await userService.getOne(req.params.id)
-      res.json(user)
-   } catch (e) {
-      next(e)
+router.get('/',
+   body('id').isMongoId()
+      .withMessage('id must be a valid MongoDB ObjectId'),
+   async (req, res, next) => {
+      try {
+         const errors = validationResult(req)
+         if (!errors.isEmpty()) {
+            return next(new BadRequestError('Validation error', errors.array()))
+         }
+         const id = req.body.id
+         const user = await userService.getOne(id)
+         res.json(user)
+      } catch (e) {
+         next(e)
+      }
    }
-})
+)
+
+router.get('/gameData',
+   body('id').isMongoId()
+      .withMessage('id must be a valid MongoDB ObjectId'),
+   async (req, res, next) => {
+      try {
+         const errors = validationResult(req)
+         if (!errors.isEmpty()) {
+            return next(new BadRequestError('Validation error', errors.array()))
+         }
+         const id = req.body.id
+         const gameData = await userService.getGameData(id)
+         res.json(gameData)
+      } catch (e) {
+         next(e)
+      }
+   }
+)
 
 router.post('/game/win', authMiddleware, async (req, res, next) => {
    try {

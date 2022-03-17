@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const Game = require('../models/Game')
 const UserDTO = require('../dto/user.dto')
+const GameDataDTO = require('../dto/gameData.dto')
 const { BadRequestError } = require('../errors/api.errors')
 
 class UserService {
@@ -13,10 +14,11 @@ class UserService {
       })
       return users.map(user => new UserDTO(user))
    }
-   async getOne(filter) {
-      const user = await User.findOne(filter)
+   async getOne(id) {
+      const user = await User.findById(id)
       if (user) {
-         return await this.populateUser(user)
+         const populatedUser = await this.populateUser(user)
+         return new UserDTO(populatedUser)
       }
       else return null
    }
@@ -32,6 +34,14 @@ class UserService {
       } catch (e) {
          return null
       }
+   }
+   async getGameData(id) {
+      const userRaw = await User.findById(id)
+      if (!userRaw) {
+         throw new BadRequestError('User not found')
+      }
+      const populatedUser = await this.populateUser(userRaw)
+      return new GameDataDTO(populatedUser.gameData)
    }
    async _addNewGame(id, difficulty, time, isWin) {
       const user = await User.findById(id)

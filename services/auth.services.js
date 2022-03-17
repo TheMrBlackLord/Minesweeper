@@ -1,7 +1,6 @@
 const User = require('../models/User')
 const GameData = require('../models/GameData')
 const tokenService = require('./token.services')
-const userService = require('./user.services')
 const UserDTO = require('../dto/user.dto')
 const { BadRequestError, UnauthorizedError } = require('../errors/api.errors')
 const bcrypt = require('bcrypt')
@@ -19,7 +18,6 @@ class AuthService {
          password: hashedPassword,
          gameData: gameData._id
       })
-      const populatedUser = await userService.populateUser(userRaw)
       const user = new UserDTO(userRaw)
       const tokens = await tokenService.generateTokens({...user})
       await tokenService.saveToken(user.id, tokens.refreshToken)
@@ -37,8 +35,7 @@ class AuthService {
       if (!isPasswordValid) {
          throw new BadRequestError('Invalid password')
       }
-      const populatedUser = await userService.populateUser(userRaw)
-      const user = new UserDTO(populatedUser)
+      const user = new UserDTO(userRaw)
       const tokens = await tokenService.generateTokens({...user})
       await tokenService.saveToken(user.id, tokens.refreshToken)
       return {
