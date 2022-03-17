@@ -28,7 +28,10 @@ class TokenService{
       }
    }
    async removeToken(refreshToken) {
-      await Token.deleteOne({refreshToken})
+      return await Token.deleteOne({refreshToken})
+   }
+   async findToken(refreshToken) {
+      return await Token.findOne({refreshToken})
    }
 }
 

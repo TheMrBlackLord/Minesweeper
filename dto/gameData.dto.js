@@ -1,7 +1,7 @@
 const gamesDTO = require('./games.dto');
 
 class GameDataDTO {
-   constructor({id, personalBest, totalWins, totalDefeats, games}) {
+   constructor({id, personalBest, totalWins, totalDefeats, games=[]}) {
       this.id = id
       this.personalBest = personalBest
       this.totalWins = totalWins

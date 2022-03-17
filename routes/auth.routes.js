@@ -24,6 +24,7 @@ router.post('/register',
       }
    }
 )
+
 router.post('/login', async (req, res, next) => {
    try {
       const {username, password} = req.body
@@ -37,6 +38,7 @@ router.post('/login', async (req, res, next) => {
       next(e)
    }
 })
+
 router.post('/logout', async (req, res, next) => {
    try {
       const {refreshToken} = req.cookies
@@ -50,4 +52,5 @@ router.post('/logout', async (req, res, next) => {
       next(e)
    }
 })
+
 module.exports = router

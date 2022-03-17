@@ -1,8 +1,9 @@
 const User = require('../models/User')
 const GameData = require('../models/GameData')
-const tokenService = require('./token.services') 
+const tokenService = require('./token.services')
+const userService = require('./user.services')
 const UserDTO = require('../dto/user.dto')
-const { BadRequestError } = require('../errors/api.errors')
+const { BadRequestError, UnauthorizedError } = require('../errors/api.errors')
 const bcrypt = require('bcrypt')
 
 class AuthService {
@@ -12,13 +13,13 @@ class AuthService {
          throw new BadRequestError('User with such username already exists')
       }
       const hashedPassword = await bcrypt.hash(password, 3)
-      const gameData = new GameData()
-      await gameData.save()
+      const gameData = await GameData.create({})
       const userRaw = await User.create({
          username,
          password: hashedPassword,
          gameData: gameData._id
       })
+      const populatedUser = await userService.populateUser(userRaw)
       const user = new UserDTO(userRaw)
       const tokens = await tokenService.generateTokens({...user})
       await tokenService.saveToken(user.id, tokens.refreshToken)
@@ -36,7 +37,8 @@ class AuthService {
       if (!isPasswordValid) {
          throw new BadRequestError('Invalid password')
       }
-      const user = new UserDTO(userRaw)
+      const populatedUser = await userService.populateUser(userRaw)
+      const user = new UserDTO(populatedUser)
       const tokens = await tokenService.generateTokens({...user})
       await tokenService.saveToken(user.id, tokens.refreshToken)
       return {

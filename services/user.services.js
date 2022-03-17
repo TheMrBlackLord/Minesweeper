@@ -13,14 +13,25 @@ class UserService {
       })
       return users.map(user => new UserDTO(user))
    }
-   async getOne(id) {
-      const user = await User.findById(id).populate({
-         path: 'gameData',
-         populate: {
-            path: 'games',
-         }
-      })
-      return new UserDTO(user)
+   async getOne(filter) {
+      const user = await User.findOne(filter)
+      if (user) {
+         return await this.populateUser(user)
+      }
+      else return null
+   }
+   async populateUser(user) {
+      try {
+         const populatedUser = await user.populate({
+            path: 'gameData',
+            populate: {
+               path: 'games',
+            }
+         })
+         return populatedUser
+      } catch (e) {
+         return null
+      }
    }
    async _addNewGame(id, difficulty, time, isWin) {
       const user = await User.findById(id)
