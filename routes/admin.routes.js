@@ -1,6 +1,8 @@
 const { Router } = require('express')
 const adminService = require('../services/admin.services')
 const { BadRequestError } = require('../errors/api.errors')
+const authMiddleware = require('../middlewares/auth.middlewares')
+const roleMiddleware = require('../middlewares/role.middlewares')
 const { body, validationResult } = require('express-validator')
 
 const router = Router()
@@ -17,6 +19,8 @@ router.patch('/updateUser',
    body('updates.role').if(body('updates.role').exists())
       .isIn(['user', 'admin'])
       .withMessage('Role must be either "user" or "admin"'),
+   authMiddleware,
+   roleMiddleware(['admin']),
    async (req, res, next) => {
       try {
          const errors = validationResult(req)
