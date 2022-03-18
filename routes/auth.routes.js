@@ -53,4 +53,18 @@ router.post('/logout', async (req, res, next) => {
    }
 })
 
+router.post('/refresh', async (req, res, next) => {
+   try {
+      const {refreshToken} = req.cookies
+      const userData = await authService.refresh(refreshToken)
+      res.cookie('refreshToken', userData.tokens.refreshToken, {
+         maxAge: 1000 * 60 * 60 * 24 * 15,
+         httpOnly: true
+      })
+      res.json(userData)
+   } catch (e) {
+      next(e)
+   }
+})
+
 module.exports = router
