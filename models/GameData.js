@@ -3,7 +3,7 @@ const { Schema, model, Types } = require('mongoose')
 const gameData = new Schema({
    personalBest: {
       type: Number,
-      default: Infinity
+      default: Number.MAX_SAFE_INTEGER
    },
    games: [{
       type: Types.ObjectId,
