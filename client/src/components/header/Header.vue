@@ -12,6 +12,10 @@
                      <a class="nav-link" aria-current="page" href="#">Rules</a>
                   </li>
                </ul>
+               <div class="d-flex me-1">
+                  <router-link class="btn btn-outline-success mx-2" :to="{name: 'login'}">Login</router-link>
+                  <router-link class="btn btn-outline-primary" :to="{name: 'register'}">Register</router-link>
+               </div>
             </div>
          </div>
       </nav>
