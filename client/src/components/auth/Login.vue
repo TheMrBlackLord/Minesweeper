@@ -61,7 +61,7 @@ export default {
         this.pushError("Please fill in all fields")
       }
     },
-    ...mapActions(['pushError', 'removeError'])
+    ...mapActions(['pushError', 'removeError']),
   },
   computed: {
     ...mapGetters(['errors'])

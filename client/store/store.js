@@ -31,6 +31,9 @@ const store = createStore({
       },
       removeError(state, index) {
          state.errors = state.errors.filter((_, i) => i !== index)
+      },
+      clearErrors(state) {
+         state.errors = []
       }
    },
    actions: {
@@ -40,7 +43,26 @@ const store = createStore({
       removeError({commit}, index) {
          commit('removeError', index)
       },
+      clearErrors({commit}) {
+         commit('clearErrors')
+      },
+      async fetchUser({commit}) {
+         const token = localStorage.getItem('token')
+         try {
+            if (token) {
+               const {data: {user}} = await api.get('/user/me', {
+                  headers: {
+                     'Authorization': `Bearer ${token}`
+                  }
+               })
+               commit('setUser', user)
+            }
+         } catch (e) {
+            commit('addError', e.response.data.message)
+         }
+      },
       async login({commit}, user) {
+         commit('clearErrors')
          try {
             const response = await api.post('/auth/login', user)
             commit('setUser', response.data.user)

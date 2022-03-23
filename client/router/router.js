@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store/store'
 
 const router = createRouter({
    history: createWebHistory(),
@@ -17,8 +18,24 @@ const router = createRouter({
          path: '/register',
          name: 'register',
          component: () => import('../src/components/auth/Register.vue')
+      },
+      {
+         path: '/profile',
+         name: 'profile',
+         component: () => import('../src/components/user/Profile.vue'),
       }
    ]
+})
+
+router.beforeEach((to, from, next) => {
+   store.dispatch('clearErrors')
+   console.log(store.getters.user)
+   if (['login', 'register'].includes(to.name) && store.getters.user) {
+      next({ name: 'home' })
+   }
+   else {
+      next()
+   }
 })
 
 export default router

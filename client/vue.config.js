@@ -7,5 +7,10 @@ module.exports = defineConfig({
       entry: 'src/main.js',
       title: 'Minesweeper',
     },
+  },
+  configureWebpack: {
+    devServer: {
+      historyApiFallback: true
+    }
   }
 })

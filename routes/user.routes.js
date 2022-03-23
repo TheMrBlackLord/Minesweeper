@@ -15,6 +15,16 @@ router.get('/all', async (req, res, next) => {
    }
 })
 
+router.get('/me', authMiddleware, async (req, res, next) => {
+   try {
+      const id = req.user.id
+      const user = await userService.getOne(id)
+      res.json(user)
+   } catch (e) {
+      next(e)
+   }
+})
+
 router.get('/',
    body('id').isMongoId()
       .withMessage('id must be a valid MongoDB ObjectId'),
