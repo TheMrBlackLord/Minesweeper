@@ -36,7 +36,6 @@
 
 
 <script>
-import axios from 'axios'
 export default {
   data() {
     return {
@@ -53,7 +52,7 @@ export default {
       if (this.form.username && this.form.password) {
         this.loading = true
         try {
-           axios.post()
+           this.$store.dispatch('register', this.form)
         } catch (e) {
           this.errors = this.errors.concat(e.message || 'Something went wrong')
         }
