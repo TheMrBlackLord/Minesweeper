@@ -48,17 +48,13 @@ const store = createStore({
       },
       async fetchUser({commit}) {
          const token = localStorage.getItem('token')
-         try {
-            if (token) {
-               const {data: {user}} = await api.get('/user/me', {
-                  headers: {
-                     'Authorization': `Bearer ${token}`
-                  }
-               })
-               commit('setUser', user)
-            }
-         } catch (e) {
-            commit('addError', e.response.data.message)
+         if (token) {
+            const {data: user} = await api.get('/user/me', {
+               headers: {
+                  'Authorization': `Bearer ${token}`
+               }
+            })
+            commit('setUser', user)
          }
       },
       async login({commit}, user) {

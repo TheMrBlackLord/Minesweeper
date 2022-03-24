@@ -29,8 +29,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
    store.dispatch('clearErrors')
-   console.log(store.getters.user)
-   if (['login', 'register'].includes(to.name) && store.getters.user) {
+   if (['login', 'register'].includes(to.name) && store.state.user) {
       next({ name: 'home' })
    }
    else {

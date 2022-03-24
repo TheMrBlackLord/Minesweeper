@@ -16,7 +16,7 @@ export default {
   components: {
     Header
   },
-  mounted() {
+  created() {
     this.$store.dispatch('fetchUser')
   }
 }
