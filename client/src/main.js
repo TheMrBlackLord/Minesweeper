@@ -6,8 +6,12 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import './styles/style.scss'
 
-const app = createApp(App)
-app.use(router)
-app.config.unwrapInjectedRef = true
-app.use(store)
-app.mount('#app')
+store.dispatch('fetchUser').then(() => {
+   const app = createApp(App)
+   app.use(router)
+   app.config.unwrapInjectedRef = true
+   app.use(store)
+   app.mount('#app')
+})
+
+

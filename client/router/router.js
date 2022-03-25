@@ -12,25 +12,37 @@ const router = createRouter({
       {
          path: '/login',
          name: 'login',
-         component: () => import('../src/components/auth/Login.vue')
+         component: () => import('../src/components/auth/Login.vue'),
+         meta: {
+            redirectLoggedIn: true
+         }
       },
       {
          path: '/register',
          name: 'register',
-         component: () => import('../src/components/auth/Register.vue')
+         component: () => import('../src/components/auth/Register.vue'),
+         meta: {
+            redirectLoggedIn: true
+         }
       },
       {
          path: '/profile',
          name: 'profile',
          component: () => import('../src/components/user/Profile.vue'),
+         meta: {
+            requiresAuth: true
+         }
       }
    ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
    store.dispatch('clearErrors')
-   if (['login', 'register'].includes(to.name) && store.state.user) {
+   if (to.meta.redirectLoggedIn && store.state.user) {
       next({ name: 'home' })
+   }
+   else if (to.meta.requiresAuth && !store.state.user) {
+      next({ name: 'login' })
    }
    else {
       next()
