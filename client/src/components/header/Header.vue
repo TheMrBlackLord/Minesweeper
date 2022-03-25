@@ -20,7 +20,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="user-dropdown">
                            <li><router-link :to="{name: 'profile'}" class="dropdown-item">Profile</router-link></li>
-                           <li><a class="dropdown-item" href="#">Logout</a></li>
+                           <li><button @click="logout" class="dropdown-item btn btn-outline-danger">Logout</button></li>
                         </ul>
                      </div>
                   </div>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
    computed: {
@@ -44,6 +44,9 @@ export default {
       route() {
          return this.$route.name
       }
+   },
+   methods: {
+      ...mapActions(['logout'])
    }
 }
 </script>

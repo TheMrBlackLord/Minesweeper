@@ -18,6 +18,10 @@ router.post('/register',
          }
          const {username, password} = req.body
          const user = await authService.register(username, password)
+         res.cookie('refreshToken', user.tokens.refreshToken, {
+            maxAge: 1000 * 60 * 60 * 24 * 15,
+            httpOnly: true
+         })
          res.status(201).json(user)
       } catch (e) {
          next(e)

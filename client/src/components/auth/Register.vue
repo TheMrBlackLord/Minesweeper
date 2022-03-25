@@ -9,7 +9,7 @@
               style="display: flex; justify-content: space-between;"
               v-for="(error, index) in errors" :key="index">
               {{error}}
-              <span @click="deleteError(index)">&times;</span>
+              <span @click="removeError(index)">&times;</span>
             </div>
             <form @submit.prevent="submit">
               <div class="form-group">
@@ -36,6 +36,8 @@
 
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -43,7 +45,6 @@ export default {
         username: "",
         password: ""
       },
-      errors: [],
       loading: false
     }
   },
@@ -51,19 +52,19 @@ export default {
     async submit() {
       if (this.form.username && this.form.password) {
         this.loading = true
-        try {
-           this.$store.dispatch('register', this.form)
-        } catch (e) {
-          this.errors = this.errors.concat(e.message || 'Something went wrong')
-        }
+        await this.$store.dispatch('register', this.form)
         this.loading = false
+        if (this.errors.length === 0) {
+          this.$router.push({name: 'home'})
+        }
       } else {
-        this.errors.push('Fill all necessary fields')
+        this.pushError("Please fill all fields")
       }
     },
-    deleteError(index) {
-      this.errors = this.errors.filter((_, idx) => idx !== index)
-    }
+    ...mapActions(['pushError', 'removeError']),
+  },
+  computed: {
+    ...mapGetters(['errors'])
   }
 }
 </script>

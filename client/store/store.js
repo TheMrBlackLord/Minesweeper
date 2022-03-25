@@ -64,6 +64,16 @@ const store = createStore({
             commit('setUser', response.data.user)
             localStorage.setItem('token', response.data.tokens.accessToken)
          } catch (e) {
+            commit('addError', e.response.data.message)
+         }
+      },
+      async register({commit}, user) {
+         commit('clearErrors')
+         try {
+            const response = await api.post('/auth/register', user)
+            commit('setUser', response.data.user)
+            localStorage.setItem('token', response.data.tokens.accessToken)
+         } catch (e) {
             const data = e.response.data
             if (data.errors.length > 0) {
                data.errors.forEach(error => {
@@ -74,6 +84,11 @@ const store = createStore({
                commit('addError', data.message)
             }
          }
+      },
+      async logout({commit}) {
+         localStorage.removeItem('token')
+         commit('setUser', null)
+         await api.post('/auth/logout')
       }
    }
 })

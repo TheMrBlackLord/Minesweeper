@@ -58,7 +58,7 @@ export default {
           this.$router.push({name: 'home'})
         }
       } else {
-        this.pushError("Please fill in all fields")
+        this.pushError("Please fill all fields")
       }
     },
     ...mapActions(['pushError', 'removeError']),
