@@ -24,12 +24,6 @@
       color: darken($light-gray, 30%);
    }
 
-   // .alert-message {
-   //    color: #b51a1a;
-   //    font-weight: bold;
-   //    font-size: 12px;
-   //    padding-left: 10px;
-   // }
 }
 
 // Controls.vue
@@ -134,5 +128,17 @@
       color: $white;
       font-size: 32px;
       font-weight: bold;
+   }
+}
+
+// Leaders.vue
+.leaders {
+   .loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   }
+   .leader-count {
+      margin-top: 30px;
    }
 }

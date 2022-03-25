@@ -35,6 +35,11 @@
             </Board>
         </div>
      </div>
+     <div class="row justify-content-center my-4">
+        <div class="col-8">
+           <Leaders />
+        </div>
+     </div>
   </section>
 </template>
 
@@ -43,12 +48,13 @@ import Board from './board/Board.vue'
 import ResultPanel from './board/ResultPanel.vue'
 import Info from './Info.vue'
 import Controls from './Controls.vue'
+import Leaders from './Leaders.vue'
 import { mapGetters } from 'vuex'
 import { computed } from 'vue'
 
 export default {
    name: 'Game',
-   components: { Board, Info, Controls, ResultPanel },
+   components: { Board, Info, Controls, ResultPanel, Leaders },
    data() {
       return {
          isGameStarted: false,

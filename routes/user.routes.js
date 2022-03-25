@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const userService = require('../services/user.services')
 const authMiddleware = require('../middlewares/auth.middlewares')
-const { body, validationResult } = require('express-validator')
+const { param, validationResult } = require('express-validator')
 const { BadRequestError } = require('../errors/api.errors')
 
 const router = Router()
@@ -25,8 +25,8 @@ router.get('/me', authMiddleware, async (req, res, next) => {
    }
 })
 
-router.get('/',
-   body('id').isMongoId()
+router.get('/:id',
+   param('id').isMongoId()
       .withMessage('id must be a valid MongoDB ObjectId'),
    async (req, res, next) => {
       try {
@@ -34,7 +34,7 @@ router.get('/',
          if (!errors.isEmpty()) {
             return next(new BadRequestError('Validation error', errors.array()))
          }
-         const id = req.body.id
+         const id = req.params.id
          const user = await userService.getOne(id)
          res.json(user)
       } catch (e) {
@@ -43,8 +43,8 @@ router.get('/',
    }
 )
 
-router.get('/gameData',
-   body('id').isMongoId()
+router.get('/gameData/:id',
+   param('id').isMongoId()
       .withMessage('id must be a valid MongoDB ObjectId'),
    async (req, res, next) => {
       try {
@@ -52,7 +52,7 @@ router.get('/gameData',
          if (!errors.isEmpty()) {
             return next(new BadRequestError('Validation error', errors.array()))
          }
-         const id = req.body.id
+         const id = req.params.id
          const gameData = await userService.getGameData(id)
          res.json(gameData)
       } catch (e) {
