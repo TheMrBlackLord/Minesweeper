@@ -32,6 +32,15 @@ const router = createRouter({
          meta: {
             requiresAuth: true
          }
+      },
+      {
+         path: '/admin',
+         name: 'admin',
+         component: () => import('../src/components/admin/AdminPanel.vue'),
+         meta: {
+            requiresAuth: true,
+            adminOnly: true
+         }
       }
    ]
 })
@@ -43,6 +52,10 @@ router.beforeEach(async (to, from, next) => {
    }
    else if (to.meta.requiresAuth && !store.state.user) {
       next({ name: 'login' })
+   }
+   else if (to.meta.requiresAuth && to.meta.adminOnly &&
+      store.state.user?.role !== 'admin') {
+         next({ name: 'home' })
    }
    else {
       next()

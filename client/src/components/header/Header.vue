@@ -20,6 +20,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="user-dropdown">
                            <li><router-link :to="{name: 'profile'}" class="dropdown-item">Profile</router-link></li>
+                           <li v-if="user.role === 'admin'"><router-link :to="{name: 'admin'}" class="dropdown-item">Admin</router-link></li>
                            <li><button @click="logout" class="dropdown-item btn btn-outline-danger">Logout</button></li>
                         </ul>
                      </div>
@@ -36,7 +37,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
    computed: {
@@ -46,7 +47,10 @@ export default {
       }
    },
    methods: {
-      ...mapActions(['logout'])
+      async logout() {
+         await this.$store.dispatch('logout')
+         this.$router.push({ name: 'home' })
+      }
    }
 }
 </script>
