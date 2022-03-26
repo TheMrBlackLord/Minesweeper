@@ -141,4 +141,18 @@
    .leader-count {
       margin-top: 30px;
    }
+   .leaders-table {
+      .can-sorted {
+         cursor: pointer;
+         &.asc:after {
+            @include arrow(-1px, -135deg);
+         }
+         &.desc:after {
+            @include arrow(2px, 45deg);
+         }
+         &:hover {
+            background: $light-gray;
+         }
+      }
+   }
 }

@@ -10,8 +10,8 @@ store.dispatch('fetchUser')
    .catch(error => console.error(error))
    .finally(() => {
       const app = createApp(App)
-      app.use(router)
       app.config.unwrapInjectedRef = true
+      app.use(router)
       app.use(store)
       app.mount('#app')
    })
