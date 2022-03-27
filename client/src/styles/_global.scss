@@ -9,3 +9,9 @@ body {
    justify-content: center;
    height: calc(100vh - #{$header-height} - 1px);
 }
+
+.loader {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}

@@ -1,0 +1,31 @@
+.users {
+   .editable {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      .edit {
+         opacity: 0;
+         visibility: hidden;
+      }
+      &:hover .edit {
+         opacity: 1;
+         visibility: visible;
+      }
+      .hide {
+         display: none;
+      }
+   }
+}
+.filter {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.no-results {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-size: 1.5rem;
+   font-weight: bold;
+   color: $red;
+}
