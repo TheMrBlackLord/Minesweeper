@@ -3,7 +3,8 @@
      <div class="row">
         <div class="col-md-4">
            <Info ref="info"
-               :flagsLeft="flagsLeft" 
+               :flagsLeft="flagsLeft"
+               :personalBest="personalBest"
                />
            <Controls 
                :difficulties="difficulties"
@@ -51,6 +52,7 @@ import Controls from './Controls.vue'
 import Leaders from './Leaders.vue'
 import { mapGetters } from 'vuex'
 import { computed } from 'vue'
+import api from '../../../http/api'
 
 export default {
    name: 'Game',
@@ -62,7 +64,8 @@ export default {
          isGameFinished: false,
          difficulty: 'easy',
          usedFlags: 0,
-         isVictory: false
+         isVictory: false,
+         personalBest: null
       }
    },
    provide() {
@@ -71,6 +74,14 @@ export default {
             return this.isGameStarted && !this.isGamePaused && !this.isGameFinished
          }),
          isPause: computed(() => this.isGamePaused),
+      }
+   },
+   async mounted() {
+      if (this.user) {
+         const { data } = await api.get(`user/gameData/${this.user.id}`)
+         if (data.personalBest < Number.MAX_SAFE_INTEGER) {
+            this.personalBest = data.personalBest
+         }
       }
    },
    methods: {
@@ -86,19 +97,31 @@ export default {
          this.usedFlags = 0
          this.isVictory = false
       },
-      victory() {
+      async victory() {
          this.isGameFinished = true
          this.isVictory = true
+         if (this.user) {
+            await this.$store.dispatch('win', {
+               difficulty: this.difficulty,
+               time: this.$refs.info.getTime()
+            })
+         }
       },
-      defeat() {
+      async defeat() {
          this.isGameFinished = true
+         if (this.user) {
+            await this.$store.dispatch('defeat', {
+               difficulty: this.difficulty,
+               time: this.$refs.info.getTime()
+            })
+         }
       },
       pauseGame() {
          this.isGamePaused = !this.isGamePaused
       }
    },
    computed: {
-      ...mapGetters(['difficulties']),
+      ...mapGetters(['difficulties', 'user']),
       flagsLeft() {
          const left = this.difficulties[this.difficulty].bombs - this.usedFlags
          return left > 0 ? left : 0

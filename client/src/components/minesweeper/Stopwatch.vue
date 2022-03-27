@@ -44,6 +44,9 @@ export default {
       reset() {
          this.elapsed = 0
       },
+      getTime() {
+         return this.elapsed
+      },
       startInterval() {
          this.interval = setInterval(this.updateCurrentTime, 1000)
       }

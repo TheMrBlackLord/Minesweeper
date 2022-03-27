@@ -89,6 +89,20 @@ const store = createStore({
          localStorage.removeItem('token')
          commit('setUser', null)
          await api.post('/auth/logout')
+      },
+      async win(_, game) {
+         await api.post('/user/game/win', game, {
+            headers: {
+               'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+         })
+      },
+      async defeat(_, game) {
+         await api.post('/user/game/defeat', game, {
+            headers: {
+               'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+         })
       }
    }
 })

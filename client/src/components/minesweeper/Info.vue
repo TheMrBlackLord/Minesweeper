@@ -9,26 +9,38 @@
             <Stopwatch ref="stopwatch" />
          </span>
       </p>
-      <p class="sub-info">
+      <p class="sub-info" v-if="user">
          Personal best:
-         <span class="value personal-best">{{ personalBest || "00:05:00" }}</span>
+         <span class="value personal-best">{{ bestTime }}</span>
       </p>
    </div>
 </template>
 
 <script>
 import Stopwatch from './Stopwatch.vue'
+import { formatTime } from '../../utils'
+import { mapGetters } from 'vuex'
+
 export default {
    name: 'Game info',
    components: { Stopwatch },
    props: {
-      flagsLeft: {type: Number, required: true},
-      personalBest: { type: String }
+      flagsLeft: { type: Number, required: true },
+      personalBest: { type: Number, default: 0 }
    },
    methods: {
       resetStopwatch() {
          this.$refs.stopwatch.reset()
+      },
+      getTime() {
+         return this.$refs.stopwatch.getTime()
       }
+   },
+   computed: {
+      bestTime() {
+         return formatTime(this.personalBest)
+      },
+      ...mapGetters(['user'])
    }
 }
 </script>
