@@ -7,12 +7,7 @@
                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="header-navbar">
-               <ul class="navbar-nav me-auto mb-lg-0">
-                  <li class="nav-item">
-                     <a class="nav-link" aria-current="page" href="#">Rules</a>
-                  </li>
-               </ul>
-               <div class="d-flex me-1">
+               <div class="d-flex ms-auto">
                   <div v-if="user">
                      <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="user-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
