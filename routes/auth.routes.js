@@ -3,6 +3,7 @@ const authService = require('../services/auth.services')
 const { body, validationResult } = require('express-validator')
 const { BadRequestError, UnauthorizedError } = require('../errors/api.errors')
 
+const cookieAge = 1000 * 60 * 60 * 24 * 15
 const router = Router()
 
 router.post('/register', 
@@ -19,7 +20,7 @@ router.post('/register',
          const {username, password} = req.body
          const user = await authService.register(username, password)
          res.cookie('refreshToken', user.tokens.refreshToken, {
-            maxAge: 1000 * 60 * 60 * 24 * 15,
+            maxAge: cookieAge,
             httpOnly: true
          })
          res.status(201).json(user)
@@ -34,7 +35,7 @@ router.post('/login', async (req, res, next) => {
       const {username, password} = req.body
       const user = await authService.login(username, password)
       res.cookie('refreshToken', user.tokens.refreshToken, {
-         maxAge: 1000 * 60 * 60 * 24 * 15,
+         maxAge: cookieAge,
          httpOnly: true
       })
       res.json(user)
@@ -62,7 +63,7 @@ router.post('/refresh', async (req, res, next) => {
       const {refreshToken} = req.cookies
       const userData = await authService.refresh(refreshToken)
       res.cookie('refreshToken', userData.tokens.refreshToken, {
-         maxAge: 1000 * 60 * 60 * 24 * 15,
+         maxAge: cookieAge,
          httpOnly: true
       })
       res.json(userData)
