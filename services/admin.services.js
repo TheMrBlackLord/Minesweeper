@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const { BadRequestError } = require('../errors/api.errors')
+const UserDTO = require('../dto/user.dto')
 const bcrypt = require('bcrypt')
 
 class AdminService {
@@ -17,7 +18,7 @@ class AdminService {
          }
       }
       await user.save()
-      return user
+      return new UserDTO(user)
    }
 }
 

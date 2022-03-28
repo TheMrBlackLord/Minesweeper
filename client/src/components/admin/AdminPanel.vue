@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="admin">
       <div class="row justify-content-center my-5">
          <div class="col-7">
             <form class="filter" @submit.prevent="">
@@ -9,6 +9,12 @@
       </div>
       <div class="row justify-content-center">
          <div class="col-11">
+            <div class="alert alert-danger"
+               style="display: flex; justify-content: space-between;"
+               v-for="(error, index) in errors" :key="index">
+               {{error}}
+               <span @click="removeError(index)">&times;</span>
+            </div>
             <div v-if="isLoading" class="loader">
                <span class="spinner-border spinner-border-sm" role="status"></span>
             </div>
@@ -26,31 +32,28 @@
                <tr v-for="(user, i) in fetchedUsers" :key="user.id">
                   <td>{{ i+1 }}</td>
                   <td>
-                     <div class="editable">
-                        <span class="value">{{ user.username }}</span>
-                        <input type="text" class="edit-field hide" :value="user.username">
-                        <button class="btn btn-outline-info edit">Edit</button>
-                     </div>
+                     <editable :defaultValue="user.username"
+                        :name="'username'"
+                        @edited="edited(user.id, $event)"/>
                   </td>
                   <td>
-                     <div class="editable">
-                        <span class="value">*********</span>
-                        <input type="text" class="edit-field hide">
-                        <button class="btn btn-outline-info edit">Edit</button>
-                     </div>
+                     <editable :defaultValue="'*********'"
+                        :name="'password'"
+                        @edited="edited(user.id, $event)"/>
                   </td>
                   <td>
-                     <div class="editable">
-                        <span class="value">{{ user.role }}</span>
-                        <input type="text" class="edit-field hide" :value="user.role">
-                        <button class="btn btn-outline-info edit">Edit</button>
-                     </div>
+                     <editable :defaultValue="user.role"
+                        :name="'role'"
+                        @edited="edited(user.id, $event)"/>
                   </td>
                   <td>{{ formatDate(user.createdAt) }}</td>
                </tr>
             </tbody>
             </table>
-            <div v-else class="no-results">No users found</div>
+            <div v-else class="center no-results">No users found</div>
+            <div class="center">
+               <button class="btn btn-outline-success" v-if="changesIsNotEmpty" @click="saveChanges">Save changes</button>
+            </div>
          </div>
       </div>
   </div>
@@ -58,14 +61,18 @@
 
 <script>
 import api from '../../../http/api'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import editable from './editable.vue'
+import { isEmpty } from 'lodash'
 
 export default {
+   components: {editable},
    data() {
       return {
          users: [],
          isLoading: false,
-         filter: ''
+         filter: '',
+         changes: {}
       }
    },
    async mounted() {
@@ -77,12 +84,32 @@ export default {
    methods: {
       formatDate(date) {
          return new Date(date).toLocaleString()
-      }
+      },
+      edited(id, data) {
+         if (Object.hasOwnProperty.call(this.changes, id)) {
+            const [key, value] = Object.entries(data)[0]
+            this.changes[id][key] = value
+         } else {
+            this.changes[id] = data
+         }
+      },
+      async saveChanges() {
+         await this.$store.dispatch('saveChanges', this.changes)
+         if (this.errors.length === 0) {
+            this.changes = {}
+         }
+      },
+      ...mapActions(['removeError']),
    },
    computed: {
-      ...mapGetters(['user']),
+      ...mapGetters(['user', 'errors']),
       fetchedUsers() {
-         return this.users.filter(user => user.username.includes(this.filter))
+         return this.users.filter(({username}) => {
+            return username.toLowerCase().includes(this.filter.toLowerCase())
+         })
+      },
+      changesIsNotEmpty() {
+         return !isEmpty(this.changes)
       }
    }
 }

@@ -103,6 +103,26 @@ const store = createStore({
                'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
          })
+      },
+      async saveChanges({commit}, changes) {
+         try {
+            for (const [id, updates] of Object.entries(changes)) {
+               await api.patch('/admin/updateuser', {id, updates}, {
+                  headers: {
+                     'Authorization': `Bearer ${localStorage.getItem('token')}`
+                  }
+               })
+            }
+         } catch(e) {
+            const data = e.response.data
+            if (data.errors.length > 0) {
+               data.errors.forEach(error => {
+                  commit('addError', error.msg)
+               })
+            } else {
+               commit('addError', data.message)
+            }
+         }
       }
    }
 })
