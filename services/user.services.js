@@ -68,6 +68,7 @@ class UserService {
    }
    async defeat(id, difficulty, time) {
       const user = await this._addNewGame(id, difficulty, time, false)
+      user.gameData.totalDefeats++
       await user.gameData.save()
       return true
    }

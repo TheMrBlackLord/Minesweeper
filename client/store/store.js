@@ -4,9 +4,9 @@ import api from '../http/api'
 const store = createStore({
    state: {
       difficulties: {
-        easy: {size: 10, bombs: 20, cellSize: 40, fontSize: 25},
-        medium: {size: 15, bombs: 45, cellSize: 30, fontSize: 22},
-        hard: {size: 20, bombs: 80, cellSize: 25, fontSize: 18},
+        easy: {size: 10, bombs: 10, cellSize: 40, fontSize: 25},
+        medium: {size: 15, bombs: 35, cellSize: 30, fontSize: 22},
+        hard: {size: 20, bombs: 60, cellSize: 25, fontSize: 18},
       },
       user: null,
       errors: [],
