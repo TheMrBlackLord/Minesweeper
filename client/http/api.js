@@ -11,14 +11,15 @@ const api = axios.create({
 
 // refresh access token if it expires
 api.interceptors.response.use(null, async error => {
-   const originalRequest = error.config
+   const request = error.config
    if (error.response.status == 401 && error.config && !error.config._isRetry) {
-        originalRequest._isRetry = true
+        request._isRetry = true
         try {
             const { data } = await api.post(`/auth/refresh`)
             localStorage.setItem('token', data.tokens.accessToken)
             store.commit('setUser', data.user)
-            return api.request(originalRequest)
+            request.headers.Authorization = `Bearer ${data.tokens.accessToken}`
+            return api.request(request)
         } catch (e) {
             console.warning('Not authorized')
         }
