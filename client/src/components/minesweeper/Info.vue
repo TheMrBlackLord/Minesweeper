@@ -18,7 +18,7 @@
 
 <script>
 import Stopwatch from './Stopwatch.vue'
-import { formatTime } from '../../utils'
+import { getTime as formatTime } from '../../utils'
 import { mapGetters } from 'vuex'
 
 export default {

@@ -34,6 +34,11 @@ const router = createRouter({
          }
       },
       {
+         path: '/profile/:id',
+         name: 'userProfile',
+         component: () => import('../src/components/user/Profile.vue'),
+      },
+      {
          path: '/admin',
          name: 'admin',
          component: () => import('../src/components/admin/AdminPanel.vue'),

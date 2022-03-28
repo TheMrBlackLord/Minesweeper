@@ -18,8 +18,10 @@
                <tbody>
                   <tr v-for="(leader, i) in sortedLeaders" :key="leader.id">
                      <th scope="row">{{ i+1 }}</th>
-                     <td>{{ leader.username }}</td>
-                     <td>{{ beautifyTime(leader.gameData.personalBest) }}</td>
+                     <td>
+                        <router-link :to="{name: 'userProfile', params: {id: leader.id}}">{{ leader.username }}</router-link>
+                     </td>
+                     <td>{{ formatTime(leader.gameData.personalBest) }}</td>
                      <td>{{ leader.gameData.totalWins }}</td>
                   </tr>
                </tbody>
@@ -41,7 +43,7 @@
 <script>
 import api from '../../../http/api'
 import { get, forIn } from 'lodash'
-import { formatTime } from '../../utils.js'
+import { getTime } from '../../utils.js'
 
 export default {
    name: 'Leaders',
@@ -63,8 +65,8 @@ export default {
       this.getLeaders()
    },
    methods: {
-      beautifyTime(time) {
-         return formatTime(time)
+      formatTime(time) {
+         return getTime(time)
       },
       sort(e, by) {
          if(by === this.sortBy) {

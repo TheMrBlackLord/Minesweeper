@@ -18,7 +18,8 @@
             <div v-if="isLoading" class="loader">
                <span class="spinner-border spinner-border-sm" role="status"></span>
             </div>
-            <table v-else-if="fetchedUsers.length > 0" class="table table-striped users">
+            <div v-else-if="fetchedUsers.length > 0">
+            <table  class="table table-striped users">
                <thead>
                <tr>
                   <td scope="col">#</td>
@@ -34,26 +35,30 @@
                   <td>
                      <editable :defaultValue="user.username"
                         :name="'username'"
-                        @edited="edited(user.id, $event)"/>
+                        :id="user.id"
+                        @edited="edited"/>
                   </td>
                   <td>
                      <editable :defaultValue="'*********'"
                         :name="'password'"
-                        @edited="edited(user.id, $event)"/>
+                        :id="user.id"
+                        @edited="edited"/>
                   </td>
                   <td>
                      <editable :defaultValue="user.role"
                         :name="'role'"
-                        @edited="edited(user.id, $event)"/>
+                        :id="user.id"
+                        @edited="edited"/>
                   </td>
                   <td>{{ formatDate(user.createdAt) }}</td>
                </tr>
             </tbody>
             </table>
-            <div v-else class="center no-results">No users found</div>
             <div class="center">
                <button class="btn btn-outline-success" v-if="changesIsNotEmpty" @click="saveChanges">Save changes</button>
             </div>
+            </div>
+            <div v-else class="center no-results">No users found</div>
          </div>
       </div>
   </div>
@@ -85,7 +90,8 @@ export default {
       formatDate(date) {
          return new Date(date).toLocaleString()
       },
-      edited(id, data) {
+      edited(payload) {
+         const {id, data} = payload
          if (Object.hasOwnProperty.call(this.changes, id)) {
             const [key, value] = Object.entries(data)[0]
             this.changes[id][key] = value

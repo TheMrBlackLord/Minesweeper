@@ -1,4 +1,5 @@
 import { chunk, fill } from 'lodash'
+import moment from 'moment'
 
 export function getMatrixPosFromIndex(index, size) {
    const row = Math.floor(index / size)
@@ -42,12 +43,6 @@ export function calculateBombs(grid) {
    return grid
 }
 
-export function formatTime(time) {
-   let hours = Math.floor(time / 3600)
-   let minutes = Math.floor((time - hours * 3600) / 60)
-   let seconds = time - hours * 3600 - minutes * 60
-   hours = hours < 10 ? '0' + hours : hours
-   minutes = minutes < 10 ? '0' + minutes : minutes
-   seconds = seconds < 10 ? '0' + seconds : seconds
-   return `${hours}:${minutes}:${seconds}`
+export function getTime(time) {
+   return moment.utc(time * 1000).format('HH:mm:ss')
 }
