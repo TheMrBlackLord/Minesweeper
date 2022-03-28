@@ -47,7 +47,10 @@
              <div class="col">
                <div class="card">
                      <div class="card-body">
-                        <h5 class="card-title text-center">Games</h5>
+                        <h5 class="card-title text-center">
+                           Games
+                           <button class="btn btn-warning" @click="sort">{{sortDir}}</button>
+                        </h5>
                         <table class="table table-striped table-hover">
                            <thead>
                               <tr>
@@ -59,7 +62,7 @@
                               </tr>
                            </thead>
                            <tbody>
-                              <tr scope="row" v-for="(game, i) in gameData.games" :key="game.id">
+                              <tr scope="row" v-for="(game, i) in sortedGames" :key="game.id">
                                  <td>{{ i+1 }}</td>
                                  <td>{{ game.difficulty }}</td>
                                  <td :class="{'bg-danger': !game.isWin, 'bg-success': game.isWin}">
@@ -82,13 +85,15 @@
 import { mapGetters } from 'vuex'
 import { getTime } from '../../utils'
 import api from '../../../http/api'
+import { reverse } from 'lodash'
 
 export default {
    data() {
       return {
          user: null,
          gameData: null,
-         isLoading: false
+         isLoading: false,
+         sortDir: 'desc'
       }
    },
    async mounted() {
@@ -104,6 +109,9 @@ export default {
    methods: {
       formatTime(time) {
          return getTime(time)
+      },
+      sort() {
+         this.sortDir = this.sortDir === 'desc' ? 'asc' : 'desc'
       }
    },
    computed: {
@@ -112,6 +120,10 @@ export default {
       }),
       id() {
          return this.$route.params.id || this.loggedIn.id
+      },
+      sortedGames() {
+         this.sortDir
+         return reverse(this.gameData.games)
       }
    }
 }
