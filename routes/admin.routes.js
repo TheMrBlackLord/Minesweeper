@@ -22,16 +22,54 @@ router.patch('/updateUser',
    authMiddleware,
    roleMiddleware(['admin']),
    async (req, res, next) => {
+      /*
+      #swagger.path = '/admin/updateUser'
+      #swagger.tags = ['Admin']
+      #swagger.security = [{
+         "bearerAuth": []
+      }]
+      #swagger.operationId = 'update_user'
+      #swagger.description = 'Update user data'
+      #swagger.parameters['authorization'] = {
+         description: 'Authorization header',
+         in: 'header',
+         required: true,
+         type: 'Bearer <jwt acess token>'
+      }
+      #swagger.requestBody = {
+         description: 'Update user data',
+         required: true,
+         schema: {$ref: '#/definitions/UpdateUser'}
+      }
+      #swagger.responses[200] = {
+            description: 'User successfully updated.',
+            schema: { $ref: '#/definitions/User' }
+      }
+      #swagger.responses[400] = {
+            description: 'Invalid parameters.',
+            schema: { $ref: '#/definitions/Error' }
+      }
+      #swagger.responses[403] = {
+            description: 'User role must be admin.',
+            schema: { $ref: '#/definitions/Error' }
+      }
+      #swagger.responses[500] = {
+            description: 'Unexpected error.',
+            schema: { $ref: '#/definitions/Error' }
+      }
+      */
       try {
-         const errors = validationResult(req)
+         const errors = validationResult(req);
          if (!errors.isEmpty()) {
-            return next(new BadRequestError('Validation error', errors.array()))
+            return next(
+               new BadRequestError("Validation error", errors.array())
+            );
          }
-         const {id, updates} = req.body
-         const updatedUser = await adminService.updateUser(id, updates)
-         res.status(200).json(updatedUser)
+         const { id, updates } = req.body;
+         const updatedUser = await adminService.updateUser(id, updates);
+         res.status(200).json(updatedUser);
       } catch (e) {
-         next(e)
+         next(e);
       }
    }
 )

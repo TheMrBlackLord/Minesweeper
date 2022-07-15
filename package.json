@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "concurrently \"npm run serve\" \"npm run client\"",
     "serve": "nodemon --ignore \"client\" server.js",
-    "client": "cd ./client && npm run serve"
+    "client": "cd ./client && npm run serve",
+    "swagger": "node ./swagger/index.js"
   },
   "keywords": [
     "Minesweeper",
@@ -26,6 +27,8 @@
     "mongoose": "^6.2.4"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "swagger-autogen": "^2.21.5",
+    "swagger-ui-express": "^4.5.0"
   }
 }
